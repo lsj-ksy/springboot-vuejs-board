@@ -364,10 +364,9 @@
 
 <script>
 import "../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"
-import "../assets/js/bootstrap.bundle.min.js"
 
 export default {
-  name: "sidebar", //컴포넌트 이름
+  name: "Sidebar", //컴포넌트 이름
   components: {}, //다른 컴포넌트 사용 시 import(배열로 등록)
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
@@ -387,7 +386,6 @@ export default {
 </script>
 
 <style>
-  @import '../assets/css/bootstrap.css';
   @import '../assets/vendors/iconly/bold.css';
   @import '../assets/vendors/perfect-scrollbar/perfect-scrollbar.css';
   @import '../assets/vendors/bootstrap-icons/bootstrap-icons.css';
