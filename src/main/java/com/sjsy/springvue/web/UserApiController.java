@@ -15,9 +15,10 @@ public class UserApiController {
 
     private final PostService postService;
 
+    //
     @GetMapping("/api/v1/postcount/{id}")
     public int postcount(@PathVariable Long id) {
-        return postService.find(id).size();
+        return postService.count(id);
     }
 
     @GetMapping("/api/v1/postlist/{id}")
