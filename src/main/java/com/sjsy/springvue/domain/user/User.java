@@ -4,6 +4,7 @@ import com.sjsy.springvue.domain.BaseTimeEntity;
 import com.sjsy.springvue.domain.abuse.BanUser;
 import com.sjsy.springvue.domain.abuse.StopUser;
 import com.sjsy.springvue.domain.board.Post;
+import com.sjsy.springvue.domain.board.PostScrap;
 import com.sjsy.springvue.domain.board.Reply;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -67,6 +68,9 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<StopUser> stopUserList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PostScrap> postScrapList = new ArrayList<>();
 
     @Builder
     public User(String socialType, String socialKey, String username, String nickname, Role role, String cellNumber, String email, Gender gender, String profileImg) {

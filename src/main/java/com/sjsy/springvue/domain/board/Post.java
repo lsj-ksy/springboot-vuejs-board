@@ -64,6 +64,9 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostFile> postFileList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostScrap> postScrapList = new ArrayList<>();
+
     @Builder
     public Post(Board board, User user, String subject, String content, int readcount, int likecount, int
                 ref, int depth) {
