@@ -1,12 +1,14 @@
 package com.sjsy.springvue.service.user;
 
+import com.sjsy.springvue.domain.board.PostRepository;
+import com.sjsy.springvue.domain.board.PostScrapsRepository;
+import com.sjsy.springvue.domain.board.ReplyRepository;
 import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
+import com.sjsy.springvue.web.dto.UserResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -14,7 +16,29 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final ReplyRepository replyRepository;
+    private final PostScrapsRepository postScrapsRepository;
 
+    @Transactional(readOnly = true)
+    public UserResDto user(Long id) {
 
+        User user = userRepository.findUserByUserid(id);
+
+        int postCount = postRepository.countPostsByUserid(id);
+        int replyCount = replyRepository.countReplysByUserid(id);
+        int scrapCount = postScrapsRepository.countScrapsByUserid(id);
+
+        return UserResDto.builder()
+                .id(user.getId())
+                .profileImg(user.getProfileImg())
+                .nickname(user.getNickname())
+                .createdDate(user.getCreatedDate())
+                .socialType(user.getSocialType())
+                .postCount(postCount)
+                .replyCount(replyCount)
+                .scrapCount(scrapCount)
+                .build();
+    }
 
 }
