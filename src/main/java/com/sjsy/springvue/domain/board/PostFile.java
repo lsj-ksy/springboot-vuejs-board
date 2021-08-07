@@ -23,16 +23,16 @@ public class PostFile {
     @JoinColumn(name = "postId")
     private Post post;
 
-    private String originFileName;
+    private String fileOriginName;
 
     private String fileName;
 
     private String filePath;
 
     @Builder
-    public PostFile(Post post, String originFileName, String fileName, String filePath) {
+    public PostFile(Post post, String fileOriginName, String fileName, String filePath) {
         this.post = post;
-        this.originFileName = originFileName;
+        this.fileOriginName = fileOriginName;
         this.fileName = fileName;
         this.filePath = filePath;
     }
