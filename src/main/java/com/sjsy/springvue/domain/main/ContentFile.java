@@ -21,16 +21,16 @@ public class ContentFile {
     @JoinColumn(name = "contentId")
     private Content content;
 
-    private String originFileName;
+    private String fileOriginName;
 
     private String fileName;
 
     private String filePath;
 
     @Builder
-    public ContentFile(Content content, String originFileName, String fileName, String filePath) {
+    public ContentFile(Content content, String fileOriginName, String fileName, String filePath) {
         this.content = content;
-        this.originFileName = originFileName;
+        this.fileOriginName = fileOriginName;
         this.fileName = fileName;
         this.filePath = filePath;
     }
