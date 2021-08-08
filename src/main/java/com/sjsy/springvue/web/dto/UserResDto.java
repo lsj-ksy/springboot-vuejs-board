@@ -1,6 +1,5 @@
 package com.sjsy.springvue.web.dto;
 
-import com.sjsy.springvue.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
