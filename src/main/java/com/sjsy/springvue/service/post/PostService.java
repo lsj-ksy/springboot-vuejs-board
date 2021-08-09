@@ -15,10 +15,20 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    //id로 PostList 찾기
     @Transactional(readOnly = true)
     public List<PostsListResDto> find(Long id) {
         return postRepository.findPostsByUserid(id).stream()
                 .map(PostsListResDto::new)
                 .collect(Collectors.toList());
     }
+
+    //검색어로 게시물찾기
+    @Transactional
+    public List<PostsListResDto> findPostsBySearch(String search) {
+        return postRepository.findPostsBySearch(search).stream()
+                .map(PostsListResDto::new)
+                .collect(Collectors.toList());
+    }
+
 }
