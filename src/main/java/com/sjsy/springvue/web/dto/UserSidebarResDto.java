@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 //사이드바 나의활동 api data
 @Getter
-public class UserResDto {
+public class UserSidebarResDto {
 
     private Long id; // user_id
     private String profileImg; //프로필사진
@@ -21,7 +21,7 @@ public class UserResDto {
 
     //UserResDto Api Data Builder
     @Builder
-    public UserResDto(Long id, String profileImg, String nickname, LocalDateTime createdDate, String socialType, int postCount, int replyCount, int scrapCount) {
+    public UserSidebarResDto(Long id, String profileImg, String nickname, LocalDateTime createdDate, String socialType, int postCount, int replyCount, int scrapCount) {
         this.id = id;
         this.profileImg = profileImg;
         this.nickname = nickname;

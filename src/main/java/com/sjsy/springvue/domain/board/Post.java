@@ -54,7 +54,6 @@ public class Post extends BaseTimeEntity {
     @ColumnDefault("0")
     private int depth;
 
-    @Column
     @ColumnDefault("1")
     private int enabled;
 
@@ -87,6 +86,12 @@ public class Post extends BaseTimeEntity {
         //파라미터로 들어온 postFile의 Post 값이 해당(this) Post가 아니라면
         if(postFile.getPost() != this)
             postFile.setPostInfo(this);
+    }
+
+    //enabled default 1
+    @PrePersist
+    public void defaultEnabled() { //글작성시 enabled default 값은 1
+        this.enabled = this.enabled == 0 ? 1 : this.enabled;
     }
 
 }
