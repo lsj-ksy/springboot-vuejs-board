@@ -84,4 +84,10 @@ public class User extends BaseTimeEntity {
         this.gender = gender;
         this.profileImg = profileImg;
     }
+
+    //enabled default 1
+    @PrePersist
+    public void defaultEnabled() { //글작성시 enabled default 값은 1
+        this.enabled = this.enabled == 0 ? 1 : this.enabled;
+    }
 }

@@ -3,7 +3,7 @@ package com.sjsy.springvue.web;
 import com.sjsy.springvue.service.post.PostService;
 import com.sjsy.springvue.service.user.UserService;
 import com.sjsy.springvue.web.dto.PostsListResDto;
-import com.sjsy.springvue.web.dto.UserResDto;
+import com.sjsy.springvue.web.dto.UserSidebarResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +20,7 @@ public class UserApiController {
 
 
     @GetMapping("/api/v1/user/{id}")
-    public UserResDto user(@PathVariable Long id) {
+    public UserSidebarResDto user(@PathVariable Long id) {
         return userService.user(id);
     }
 
