@@ -1,10 +1,14 @@
 package com.sjsy.springvue.service.main;
 
+import com.sjsy.springvue.domain.board.PostRepository;
 import com.sjsy.springvue.domain.main.Content;
 import com.sjsy.springvue.domain.main.ContentFile;
 import com.sjsy.springvue.domain.main.ContentRepository;
+import com.sjsy.springvue.domain.main.TitleRepository;
 import com.sjsy.springvue.web.dto.MainFileResDto;
 import com.sjsy.springvue.web.dto.MainResDto;
+import com.sjsy.springvue.web.dto.MainTitleResDto;
+import com.sjsy.springvue.web.dto.PostsListResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +23,16 @@ import java.util.stream.Collectors;
 public class MainService {
 
     private final ContentRepository contentRepository;
+    private final PostRepository postRepository;
+    private final TitleRepository titleRepository;
 
+    //대문 타이틀 사진
+    @Transactional(readOnly = true)
+    public MainTitleResDto mainTitle() {
+        return new MainTitleResDto(titleRepository.findTitleFile());
+    }
+
+    //main과 main files service
     @Transactional(readOnly = true)
     public MainResDto mainContent() {
 
@@ -38,4 +51,14 @@ public class MainService {
                 .mainFileResDtoList(contentFileList)
                 .build();
     }
+
+    //main 전체글보기 dto service
+    @Transactional(readOnly = true)
+    public List<PostsListResDto> findAllByEnabled() {
+        return postRepository.findAllByEnabled().stream()
+                .map(PostsListResDto::new)
+                .collect(Collectors.toList());
+    }
+
+
 }

@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 public class MainResDto {
 
-    private String content;
-    private List<MainFileResDto> mainFileResDtoList;
+    private String content; //main 내용
+    private List<MainFileResDto> mainFileResDtoList; //main files
 
     @Builder
     public MainResDto(Content content, List<MainFileResDto> mainFileResDtoList) {

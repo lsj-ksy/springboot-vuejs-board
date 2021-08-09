@@ -1,21 +1,34 @@
 package com.sjsy.springvue.web;
 
 import com.sjsy.springvue.service.post.PostService;
+
+import com.sjsy.springvue.web.dto.PostsListResDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import com.sjsy.springvue.web.dto.PostSaveReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class PostApiController {
 
     private final PostService postService;
+
+    //사이트 내 게시글 검색 api data
+    @GetMapping("/api/v1/serach/{search}")
+    public List<PostsListResDto> findPostsBySearch(@PathVariable String search) {
+        return postService.findPostsBySearch(search);
+    }
 
     //게시물 등록
     @PostMapping("/api/v1/postsave")
@@ -25,6 +38,5 @@ public class PostApiController {
                          PostSaveReqDto postSaveReqDto) throws Exception {
         return postService.postSave(fileList, postSaveReqDto);
     }
-
 
 }
