@@ -1,9 +1,6 @@
 package com.sjsy.springvue.domain.main;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "main_content")
 @Entity
+@ToString(exclude={"contentFilelist"})
 public class Content {
 
     @Id

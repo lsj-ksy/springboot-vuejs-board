@@ -26,11 +26,6 @@ public class PostService {
     private final FileHandler fileHandler;
 
     @Transactional(readOnly = true)
-    public int count(Long id) {
-        return postRepository.countPostsByUserid(id);
-    }
-
-    @Transactional(readOnly = true)
     public List<PostsListResDto> find(Long id) {
         return postRepository.findPostsByUserid(id).stream()
                 .map(PostsListResDto::new)

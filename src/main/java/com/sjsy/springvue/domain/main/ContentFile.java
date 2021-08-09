@@ -1,9 +1,6 @@
 package com.sjsy.springvue.domain.main;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "main_content_file")
 @Entity
+@ToString(exclude={"content"})
 public class ContentFile {
 
     @Id
