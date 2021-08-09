@@ -80,4 +80,13 @@ public class Post extends BaseTimeEntity {
         this.depth = depth;
     }
 
+    //PostFile 추가하기
+    public void addPostFile(PostFile postFile) {
+        this.postFileList.add(postFile);
+
+        //파라미터로 들어온 postFile의 Post 값이 해당(this) Post가 아니라면
+        if(postFile.getPost() != this)
+            postFile.setPostInfo(this);
+    }
+
 }
