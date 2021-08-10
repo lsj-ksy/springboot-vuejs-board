@@ -3,10 +3,7 @@ package com.sjsy.springvue.web;
 import com.sjsy.springvue.service.main.MainService;
 import com.sjsy.springvue.web.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,19 +16,29 @@ public class MainApiController {
 
     private final MainService mainService;
 
-    //타이틀 사진 api data
+    //타이틀 사진 api data response
     @GetMapping("/api/v1/title")
     public MainTitleResDto mainTitle() {
         return mainService.mainTitle();
     }
 
-    //대문 api data
+    //타이틀 사진 등록 request
+    @PostMapping("/api/v1/titlesave")
+    public String titleSave(@RequestParam(value = "files", required = true) MultipartFile file, //required = false 필수 파라미터 아니라고 체크
+                         TitleFileSaveReqDto titleFileSaveReqDto) throws Exception {
+        mainService.titlePut(file, titleFileSaveReqDto);
+
+        return "등록성공";
+    }
+
+
+    //대문 api data response
     @GetMapping("/api/v1/main")
     public MainResDto main() {
         return mainService.mainContent();
     }
 
-    //게시물 등록
+    //게시물 등록 request
     @PostMapping("/api/v1/mainsave")
     public Long mainSave(@RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
                          //required = false 필수 파라미터 아니라고 체크
@@ -40,7 +47,7 @@ public class MainApiController {
         return mainService.mainSave(fileList, mainSaveReqDto);
     }
 
-    //대문 전체글보기 api data
+    //대문 전체글보기 api data response
     @GetMapping("/api/v1/mainlist")
     public List<PostsListResDto> mainList() {
         return mainService.findAllByEnabled();
