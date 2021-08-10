@@ -20,10 +20,11 @@ public class Title {
 
     public Title() {}
 
-    public Title(String filePath, String fileName, String fileOriginName){
-        this.filePath = filePath;
-        this.fileName = fileName;
+    @Builder
+    public Title(String fileOriginName, String fileName, String filePath) {
         this.fileOriginName = fileOriginName;
+        this.fileName = fileName;
+        this.filePath = filePath;
     }
 
 }
