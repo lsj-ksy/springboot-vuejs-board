@@ -5,7 +5,7 @@ import com.sjsy.springvue.domain.post.PostScrapsRepository;
 import com.sjsy.springvue.domain.board.ReplyRepository;
 import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
-import com.sjsy.springvue.web.dto.UserResDto;
+import com.sjsy.springvue.web.dto.UserSidebarResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ public class UserService {
     private final PostScrapsRepository postScrapsRepository;
 
     @Transactional(readOnly = true)
-    public UserResDto user(Long id) {
+    public UserSidebarResDto user(Long id) {
 
         User user = userRepository.findUserByUserid(id);
 
@@ -29,7 +29,7 @@ public class UserService {
         int replyCount = replyRepository.countReplysByUserid(id);
         int scrapCount = postScrapsRepository.countScrapsByUserid(id);
 
-        return UserResDto.builder()
+        return UserSidebarResDto.builder()
                 .id(user.getId())
                 .profileImg(user.getProfileImg())
                 .nickname(user.getNickname())

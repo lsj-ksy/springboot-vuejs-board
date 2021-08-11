@@ -29,7 +29,6 @@ public class Reply extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column
     @ColumnDefault("1")
     private int enabled;
 
@@ -53,5 +52,12 @@ public class Reply extends BaseTimeEntity {
     public void update(String content) {
         this.content = content;
     }
+
+    //enabled default 1
+    @PrePersist
+    public void defaultEnabled() { //글작성시 enabled default 값은 1
+        this.enabled = this.enabled == 0 ? 1 : this.enabled;
+    }
+
 
 }

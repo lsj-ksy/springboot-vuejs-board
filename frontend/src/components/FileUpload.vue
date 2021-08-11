@@ -4,12 +4,19 @@
     <div>
       <button @click="selectUploadFile()">이미지 선택</button>
     </div>
+    <div>
+      <button @click="selectUploadFileForMain()">메인 이미지들 선택</button>
+    </div>
+    <div>
+      <button @click="selectUploadFileForTitle()">타이틀 이미지 업로드</button>
+    </div>
     <span>response : {{ response }}</span>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+
 export default {
   name: "FileUpload", //컴포넌트 이름
   components: {}, //다른 컴포넌트 사용 시 import(배열로 등록)
@@ -38,7 +45,7 @@ export default {
       // 클릭
       elem.click();
       // 이벤트 감지
-      elem.onchange = function() {
+      elem.onchange = function () {
         const formData = new FormData()
         formData.append('userId', 2);
         formData.append('boardId', 1);
@@ -47,7 +54,63 @@ export default {
         for (var index = 0; index < this.files.length; index++) {
           formData.append('files', this.files[index])
         }
-        axios.post('/api/v1/postsave', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
+        axios.post('/api/v1/postsave', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+          vue.response = response.data
+        }).catch(error => {
+          vue.response = error.message
+        })
+      }
+
+    },
+    selectUploadFileForMain() {
+      var vue = this
+      let elem = document.createElement('input')
+      // 이미지 파일 업로드 / 동시에 여러 파일 업로드
+      elem.id = 'image'
+      elem.type = 'file'
+      elem.accept = 'image/*'
+      elem.multiple = true
+      // 클릭
+      elem.click();
+      // 이벤트 감지
+      elem.onchange = function () {
+        const formData = new FormData()
+        formData.append('userId', 2);
+        formData.append('boardId', 1);
+        formData.append('subject', '메인파일업로드 테스트');
+        formData.append('content', '수연이 정말똑똑하네')
+        for (var index = 0; index < this.files.length; index++) {
+          formData.append('files', this.files[index])
+        }
+        axios.post('/api/v1/mainsave', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+          vue.response = response.data
+        }).catch(error => {
+          vue.response = error.message
+        })
+      }
+
+    },
+    selectUploadFileForTitle() {
+      var vue = this
+      let elem = document.createElement('input')
+      // 이미지 파일 업로드 / 동시에 여러 파일 업로드
+      elem.id = 'image'
+      elem.type = 'file'
+      elem.accept = 'image/*'
+      elem.multiple = true
+      // 클릭
+      elem.click();
+      // 이벤트 감지
+      elem.onchange = function () {
+        const formData = new FormData()
+        formData.append('userId', 2);
+        formData.append('boardId', 1);
+        formData.append('subject', '메인파일업로드 테스트');
+        formData.append('content', '수연아 행복해..?')
+        for (var index = 0; index < this.files.length; index++) {
+          formData.append('files', this.files[index])
+        }
+        axios.post('/api/v1/titlesave', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
           vue.response = response.data
         }).catch(error => {
           vue.response = error.message

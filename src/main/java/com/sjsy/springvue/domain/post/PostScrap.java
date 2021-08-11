@@ -27,7 +27,6 @@ public class PostScrap {
     @JoinColumn(name = "postId")
     private Post post;
 
-    @Column
     @ColumnDefault("1")
     private int enabled;
 
@@ -35,6 +34,12 @@ public class PostScrap {
     public PostScrap(User user, Post post) {
         this.user = user;
         this.post = post;
+    }
+
+    //enabled default 1
+    @PrePersist
+    public void defaultEnabled() { //글작성시 enabled default 값은 1
+        this.enabled = this.enabled == 0 ? 1 : this.enabled;
     }
 
 }

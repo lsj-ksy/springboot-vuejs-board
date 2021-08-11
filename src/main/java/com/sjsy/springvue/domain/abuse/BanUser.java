@@ -28,7 +28,6 @@ public class BanUser extends BaseTimeEntity {
 
     private String comment;
 
-    @Column
     @ColumnDefault("1")
     private int enabled;
 
@@ -36,6 +35,12 @@ public class BanUser extends BaseTimeEntity {
     public BanUser(User user, String comment) {
         this.user = user;
         this.comment = comment;
+    }
+
+    //enabled default 1
+    @PrePersist
+    public void defaultEnabled() { //글작성시 enabled default 값은 1
+        this.enabled = this.enabled == 0 ? 1 : this.enabled;
     }
 
 }
