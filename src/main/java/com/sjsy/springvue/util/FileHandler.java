@@ -3,9 +3,9 @@ package com.sjsy.springvue.util;
 import com.sjsy.springvue.domain.main.ContentFile;
 import com.sjsy.springvue.domain.main.Title;
 import com.sjsy.springvue.domain.post.PostFile;
-import com.sjsy.springvue.web.dto.MainFileSaveReqDto;
-import com.sjsy.springvue.web.dto.PostFileSaveDto;
-import com.sjsy.springvue.web.dto.TitleFileSaveReqDto;
+import com.sjsy.springvue.web.dto.request.MainFileSaveReqDto;
+import com.sjsy.springvue.web.dto.request.PostFileSaveReqDto;
+import com.sjsy.springvue.web.dto.request.TitleFileSaveReqDto;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,7 +64,7 @@ public class FileHandler {
                 multipartFile.transferTo(new File(filePath)); //transferTo() -> 파일 저장
 
                 //리턴될 결과값 리스트에 추가 (Dto를 새로 만들고 그 Dto의 toEntity() 메서드를 이용하여 PostFile로 만들어줌)
-                resultFileList.add(new PostFileSaveDto(fileOriginName, fileName, filePath).toEntity());
+                resultFileList.add(new PostFileSaveReqDto(fileOriginName, fileName, filePath).toEntity());
             }
         }
         return resultFileList;

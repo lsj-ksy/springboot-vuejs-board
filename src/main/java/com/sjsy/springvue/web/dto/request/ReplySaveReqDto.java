@@ -1,4 +1,4 @@
-package com.sjsy.springvue.web.dto;
+package com.sjsy.springvue.web.dto.request;
 
 import com.sjsy.springvue.domain.post.Post;
 import com.sjsy.springvue.domain.board.Reply;

@@ -2,7 +2,12 @@ package com.sjsy.springvue.service.main;
 
 import com.sjsy.springvue.domain.main.*;
 import com.sjsy.springvue.domain.post.PostRepository;
-import com.sjsy.springvue.web.dto.*;
+import com.sjsy.springvue.web.dto.request.MainSaveReqDto;
+import com.sjsy.springvue.web.dto.request.TitleFileSaveReqDto;
+import com.sjsy.springvue.web.dto.response.MainFileResDto;
+import com.sjsy.springvue.web.dto.response.MainResDto;
+import com.sjsy.springvue.web.dto.response.MainTitleResDto;
+import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

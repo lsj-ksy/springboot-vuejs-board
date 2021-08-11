@@ -1,4 +1,4 @@
-package com.sjsy.springvue.web.dto;
+package com.sjsy.springvue.web.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

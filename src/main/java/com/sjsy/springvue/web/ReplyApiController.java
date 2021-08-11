@@ -1,9 +1,9 @@
 package com.sjsy.springvue.web;
 
 import com.sjsy.springvue.service.reply.ReplyService;
-import com.sjsy.springvue.web.dto.ReplyListResDto;
-import com.sjsy.springvue.web.dto.ReplySaveReqDto;
-import com.sjsy.springvue.web.dto.ReplyUpdateReqDto;
+import com.sjsy.springvue.web.dto.response.ReplyListResDto;
+import com.sjsy.springvue.web.dto.request.ReplySaveReqDto;
+import com.sjsy.springvue.web.dto.request.ReplyUpdateReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
