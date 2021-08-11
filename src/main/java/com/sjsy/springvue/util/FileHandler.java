@@ -1,6 +1,6 @@
 package com.sjsy.springvue.util;
 
-import com.sjsy.springvue.domain.board.PostFile;
+import com.sjsy.springvue.domain.post.PostFile;
 import com.sjsy.springvue.web.dto.PostFileSaveDto;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;

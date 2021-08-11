@@ -1,4 +1,4 @@
-package com.sjsy.springvue.domain.board;
+package com.sjsy.springvue.domain.post;
 
 import com.sjsy.springvue.domain.user.User;
 import lombok.AccessLevel;

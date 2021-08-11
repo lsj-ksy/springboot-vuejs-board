@@ -1,5 +1,6 @@
 package com.sjsy.springvue.domain.board;
 
+import com.sjsy.springvue.domain.post.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,10 @@
 package com.sjsy.springvue.service.post;
 
 import com.sjsy.springvue.domain.board.*;
+import com.sjsy.springvue.domain.post.Post;
+import com.sjsy.springvue.domain.post.PostFile;
+import com.sjsy.springvue.domain.post.PostFileRepository;
+import com.sjsy.springvue.domain.post.PostRepository;
 import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
@@ -41,13 +45,13 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    // (게시물 등록)
+    // (게시물 등록) user_id로 User 가져오기
     private User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found User id = " + id));
     }
 
-    // (게시물 등록)
+    // (게시물 등록) board_id로 Board 가져오기
     private Board getBoardById(Long id) {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Board id = " + id));
