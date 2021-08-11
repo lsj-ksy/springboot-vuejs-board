@@ -19,7 +19,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //무분별한 객체 생성에 대한 체크 한 번 더
-@Table(name = "user_info")
+@Table( name = "user_info",
+        uniqueConstraints = { @UniqueConstraint( columnNames = {"socialKey", "nickname"} ) } )
 @Entity
 public class User extends BaseTimeEntity {
 
@@ -31,7 +32,6 @@ public class User extends BaseTimeEntity {
     private String socialType;
 
     @NotNull
-    @Column(unique = true)
     private String socialKey;
 
     @NotNull

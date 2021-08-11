@@ -18,20 +18,15 @@ public class ReplyApiController {
     private final ReplyService replyService;
 
     //댓글 등록
-    @PostMapping("/api/v1/replysave")
+    @PostMapping("/api/v1/reply/save")
     public Long replySave(ReplySaveReqDto replySaveReqDto) {
         return replyService.replySave(replySaveReqDto);
     }
 
     //게시물 번호 > 댓글 리스트 가져오기
-    @GetMapping("/api/v1/post/{id}/replylist")
-    public ResponseEntity<?> getReplyList(@PathVariable Long id) {
-        List<ReplyListResDto> replyListResDtoList = replyService.getReplyListByPostId(id);
-        if(!replyListResDtoList.isEmpty()) {
-            return new ResponseEntity<List<ReplyListResDto>>(replyListResDtoList, HttpStatus.OK);
-        }else {
-            return new ResponseEntity<String>("Not Found replyList", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/api/v1/post/{id}/reply/list")
+    public ResponseEntity<List<ReplyListResDto>> getReplyList(@PathVariable Long id) {
+        return new ResponseEntity<List<ReplyListResDto>>(replyService.getReplyListByPostId(id), HttpStatus.OK);
     }
 
     //댓글 수정
