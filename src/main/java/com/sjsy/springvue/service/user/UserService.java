@@ -5,7 +5,7 @@ import com.sjsy.springvue.domain.post.PostScrapsRepository;
 import com.sjsy.springvue.domain.board.ReplyRepository;
 import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
-import com.sjsy.springvue.web.dto.UserSidebarResDto;
+import com.sjsy.springvue.web.dto.response.UserSidebarResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +40,17 @@ public class UserService {
                 .scrapCount(scrapCount)
                 .build();
     }
+
+    @Transactional(readOnly = true)
+    public boolean checkNickname(String nickname) {
+        int result = userRepository.findNickname(nickname);
+
+        if(result == 0) { //닉네임으로 조회된 값이 있다면 중복아님, true
+            return true;
+        } else { //닉네임으로 조회된 값이 없다면 중복아님, false
+            return false;
+        }
+    }
+
 
 }

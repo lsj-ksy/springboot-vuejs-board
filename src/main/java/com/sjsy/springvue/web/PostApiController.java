@@ -2,10 +2,10 @@ package com.sjsy.springvue.web;
 
 import com.sjsy.springvue.service.post.PostService;
 
-import com.sjsy.springvue.web.dto.PostsListResDto;
+import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.sjsy.springvue.web.dto.PostSaveReqDto;
+import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

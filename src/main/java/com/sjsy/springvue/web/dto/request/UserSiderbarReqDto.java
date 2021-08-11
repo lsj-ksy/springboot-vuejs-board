@@ -1,25 +1,25 @@
-package com.sjsy.springvue.web.dto;
+package com.sjsy.springvue.web.dto.request;
 
-import com.sjsy.springvue.domain.post.PostFile;
+import com.sjsy.springvue.domain.main.Title;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class PostFileSaveDto {
+public class UserSiderbarReqDto {
 
     private String fileOriginName;
     private String fileName;
     private String filePath;
 
     @Builder
-    public PostFileSaveDto(String fileOriginName, String fileName, String filePath) {
+    public UserSiderbarReqDto(String fileOriginName, String fileName, String filePath) {
         this.fileOriginName = fileOriginName;
         this.fileName = fileName;
         this.filePath = filePath;
     }
 
-    public PostFile toEntity() {
-        return PostFile.builder()
+    public Title toEntity() {
+        return Title.builder()
                 .fileOriginName(fileOriginName)
                 .fileName(fileName)
                 .filePath(filePath)

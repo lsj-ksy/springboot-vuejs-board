@@ -1,7 +1,11 @@
 package com.sjsy.springvue.web;
 
 import com.sjsy.springvue.service.main.MainService;
-import com.sjsy.springvue.web.dto.*;
+import com.sjsy.springvue.web.dto.request.MainSaveReqDto;
+import com.sjsy.springvue.web.dto.request.TitleFileSaveReqDto;
+import com.sjsy.springvue.web.dto.response.MainResDto;
+import com.sjsy.springvue.web.dto.response.MainTitleResDto;
+import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
