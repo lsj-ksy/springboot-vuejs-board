@@ -1,8 +1,8 @@
 package com.sjsy.springvue.util;
 
-import com.sjsy.springvue.domain.board.PostFile;
 import com.sjsy.springvue.domain.main.ContentFile;
 import com.sjsy.springvue.domain.main.Title;
+import com.sjsy.springvue.domain.post.PostFile;
 import com.sjsy.springvue.web.dto.MainFileSaveReqDto;
 import com.sjsy.springvue.web.dto.PostFileSaveDto;
 import com.sjsy.springvue.web.dto.TitleFileSaveReqDto;

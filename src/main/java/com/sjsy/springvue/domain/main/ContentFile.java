@@ -1,6 +1,5 @@
 package com.sjsy.springvue.domain.main;
 
-import com.sjsy.springvue.domain.board.Post;
 import lombok.*;
 
 import javax.persistence.*;
