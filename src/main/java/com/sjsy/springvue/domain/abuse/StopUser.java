@@ -1,6 +1,5 @@
 package com.sjsy.springvue.domain.abuse;
 
-import com.sjsy.springvue.domain.BaseTimeEntity;
 import com.sjsy.springvue.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;

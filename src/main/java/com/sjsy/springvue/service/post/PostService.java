@@ -1,6 +1,7 @@
 package com.sjsy.springvue.service.post;
 
-import com.sjsy.springvue.domain.board.*;
+import com.sjsy.springvue.domain.board.Board;
+import com.sjsy.springvue.domain.board.BoardRepository;
 import com.sjsy.springvue.domain.post.Post;
 import com.sjsy.springvue.domain.post.PostFile;
 import com.sjsy.springvue.domain.post.PostFileRepository;

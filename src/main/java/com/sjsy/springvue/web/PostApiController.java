@@ -16,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @RestController
 public class PostApiController {

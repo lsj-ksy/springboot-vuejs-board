@@ -1,10 +1,6 @@
 package com.sjsy.springvue.web.dto;
 
-import com.sjsy.springvue.domain.board.Board;
-import com.sjsy.springvue.domain.board.Post;
 import com.sjsy.springvue.domain.main.Content;
-import com.sjsy.springvue.domain.main.Title;
-import com.sjsy.springvue.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
