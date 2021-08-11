@@ -1,5 +1,6 @@
-package com.sjsy.springvue.domain.board;
+package com.sjsy.springvue.domain.post;
 
+import com.sjsy.springvue.domain.board.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

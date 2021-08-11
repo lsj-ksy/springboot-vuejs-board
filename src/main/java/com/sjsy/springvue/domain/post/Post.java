@@ -1,6 +1,8 @@
-package com.sjsy.springvue.domain.board;
+package com.sjsy.springvue.domain.post;
 
 import com.sjsy.springvue.domain.BaseTimeEntity;
+import com.sjsy.springvue.domain.board.Board;
+import com.sjsy.springvue.domain.board.Reply;
 import com.sjsy.springvue.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -86,6 +88,15 @@ public class Post extends BaseTimeEntity {
         //파라미터로 들어온 postFile의 Post 값이 해당(this) Post가 아니라면
         if(postFile.getPost() != this)
             postFile.setPostInfo(this);
+    }
+
+    //Reply 추가하기
+    public void addReply(Reply reply) {
+        this.replyList.add(reply);
+
+        //파라미터로 들어온 reply의 Post 값이 해당(this) Post가 아니라면
+        if(reply.getPost() != this)
+            reply.setPostInfo(this);
     }
 
     //enabled default 1

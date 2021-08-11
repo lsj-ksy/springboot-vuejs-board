@@ -24,6 +24,8 @@ public class UserApiController {
         return userService.user(id);
     }
 
+    //이 주소 고민 많이 필요함
+    // /api/v1/user/posts/{user.id} 요런느낌?
     @GetMapping("/api/v1/postlist/{id}")
     public List<PostsListResDto> postlist(@PathVariable Long id) {
         return postService.find(id);

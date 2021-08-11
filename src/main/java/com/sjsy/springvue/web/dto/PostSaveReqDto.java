@@ -1,13 +1,10 @@
 package com.sjsy.springvue.web.dto;
 
 import com.sjsy.springvue.domain.board.Board;
-import com.sjsy.springvue.domain.board.Post;
+import com.sjsy.springvue.domain.post.Post;
 import com.sjsy.springvue.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Getter
 public class PostSaveReqDto {

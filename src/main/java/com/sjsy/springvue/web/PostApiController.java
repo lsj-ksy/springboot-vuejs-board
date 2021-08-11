@@ -31,7 +31,7 @@ public class PostApiController {
     }
 
     //게시물 등록
-    @PostMapping("/api/v1/postsave")
+    @PostMapping("/api/v1/post/save")
     public Long postSave(@RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
                          //required = false 필수 파라미터 아니라고 체크
                          //Optional로 받는 이유는 필수 파라미터 아니므로 나중에 .isPresent()로 Null 여부 체크하여 fileList 있는 경우에만 파일 저장하려고

@@ -1,9 +1,9 @@
 package com.sjsy.springvue.service.main;
 
-import com.sjsy.springvue.domain.board.PostFile;
-import com.sjsy.springvue.domain.board.PostRepository;
+import com.sjsy.springvue.domain.post.PostFile;
 import com.sjsy.springvue.domain.main.*;
 import com.sjsy.springvue.web.dto.*;
+import com.sjsy.springvue.domain.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

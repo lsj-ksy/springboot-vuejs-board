@@ -1,6 +1,6 @@
 package com.sjsy.springvue.web.dto;
 
-import com.sjsy.springvue.domain.board.Post;
+import com.sjsy.springvue.domain.post.Post;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

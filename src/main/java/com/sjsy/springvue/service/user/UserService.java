@@ -1,7 +1,7 @@
 package com.sjsy.springvue.service.user;
 
-import com.sjsy.springvue.domain.board.PostRepository;
-import com.sjsy.springvue.domain.board.PostScrapsRepository;
+import com.sjsy.springvue.domain.post.PostRepository;
+import com.sjsy.springvue.domain.post.PostScrapsRepository;
 import com.sjsy.springvue.domain.board.ReplyRepository;
 import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
