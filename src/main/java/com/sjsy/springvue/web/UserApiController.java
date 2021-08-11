@@ -2,6 +2,7 @@ package com.sjsy.springvue.web;
 
 import com.sjsy.springvue.service.post.PostService;
 import com.sjsy.springvue.service.user.UserService;
+import com.sjsy.springvue.web.dto.request.UserSidebarReqDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import com.sjsy.springvue.web.dto.response.UserSidebarResDto;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,11 @@ public class UserApiController {
         return check;
     }
 
-
-    @PatchMapping("/api/v1/user/myinfo/update/{id}")
-    //public
+    //닉네임변경
+    @PatchMapping("/api/v1/user/myinfo/update")
+    public void userNicknameUpdate(UserSidebarReqDto userSidebarReqDto) {
+        userService.userNicknameUpdate(userSidebarReqDto);
+    }
 
 
     //이 주소 고민 많이 필요함

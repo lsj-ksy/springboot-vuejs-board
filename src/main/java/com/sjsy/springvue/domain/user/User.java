@@ -6,11 +6,9 @@ import com.sjsy.springvue.domain.abuse.StopUser;
 import com.sjsy.springvue.domain.post.Post;
 import com.sjsy.springvue.domain.post.PostScrap;
 import com.sjsy.springvue.domain.board.Reply;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,6 +20,7 @@ import java.util.List;
 @Table( name = "user_info",
         uniqueConstraints = { @UniqueConstraint( columnNames = {"socialKey", "nickname"} ) } )
 @Entity
+@ToString
 public class User extends BaseTimeEntity {
 
     @Id
@@ -90,4 +89,12 @@ public class User extends BaseTimeEntity {
     public void defaultEnabled() { //글작성시 enabled default 값은 1
         this.enabled = this.enabled == 0 ? 1 : this.enabled;
     }
+
+
+    //닉네임변동에 사용되는 setter
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+
 }
