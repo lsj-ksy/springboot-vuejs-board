@@ -2,6 +2,7 @@ package com.sjsy.springvue.web;
 
 import com.sjsy.springvue.service.post.PostService;
 
+import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,13 +45,9 @@ public class PostApiController {
     }
 
     //게시글 상세보기 response
-    /*
     @GetMapping("/api/v1/post/detail/{post_id}")
-    public 글상세보기Dto postDetail(@PathVariable Long post_id) {
+    public PostDetailResDto postDetail(@PathVariable Long post_id) {
         return postService.findPostById(post_id);
     }
-
-     */
-
 
 }

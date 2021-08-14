@@ -10,6 +10,7 @@ import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
+import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,23 @@ public class PostService {
         return postRepository.findPostsBySearch(search).stream()
                 .map(PostsListResDto::new)
                 .collect(Collectors.toList());
+    }
+
+    //게시글 상세보기
+    @Transactional
+    public PostDetailResDto findPostById(Long post_id) {
+        Post post = postRepository.findById(post_id).get();
+
+        return PostDetailResDto.builder()
+                .id(post.getId())
+                .createdDate(post.getCreatedDate())
+                .modefiedDate(post.getModifiedDate())
+                .subject(post.getSubject())
+                .content(post.getContent())
+                .likecount(post.getLikecount())
+                .readcount(post.getReadcount())
+                .build();
+
     }
 
     // (게시물 등록) user_id로 User 가져오기
