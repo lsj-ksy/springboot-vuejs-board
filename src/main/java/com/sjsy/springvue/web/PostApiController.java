@@ -37,4 +37,20 @@ public class PostApiController {
         return postService.postSave(fileList, postSaveReqDto);
     }
 
+    //항목별 게시글 리스트 api data response
+    @GetMapping("/api/v1/post/list/{board_type}")
+    public List<PostsListResDto> postList(@PathVariable String board_type) {
+        return postService.findAllByBoardInfo(board_type);
+    }
+
+    //게시글 상세보기 response
+    /*
+    @GetMapping("/api/v1/post/detail/{post_id}")
+    public 글상세보기Dto postDetail(@PathVariable Long post_id) {
+        return postService.findPostById(post_id);
+    }
+
+     */
+
+
 }
