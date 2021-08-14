@@ -76,4 +76,11 @@ public class PostService {
         return postRepository.save(savePost).getId(); //post 저장 후 getId 하여 id값 리턴
     }
 
+    //main 전체글보기 dto response service
+    @Transactional(readOnly = true)
+    public List<PostsListResDto> findAllByBoardInfo(String boardType) {
+        return postRepository.findAllByBoardInfo(boardType).stream()
+                .map(PostsListResDto::new)
+                .collect(Collectors.toList());
+    }
 }
