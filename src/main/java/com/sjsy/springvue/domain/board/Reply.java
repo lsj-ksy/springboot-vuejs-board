@@ -59,5 +59,9 @@ public class Reply extends BaseTimeEntity {
         this.enabled = this.enabled == 0 ? 1 : this.enabled;
     }
 
+    //delete reply ( enabled change )
+    public void setEnabled() {
+        this.enabled = this.enabled != 0 ? 0 : 1;
+    }
 
 }

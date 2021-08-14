@@ -10,6 +10,7 @@ import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
+import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
 import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
@@ -47,23 +48,6 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    //게시글 상세보기
-    @Transactional
-    public PostDetailResDto findPostById(Long post_id) {
-        Post post = postRepository.findById(post_id).get();
-
-        return PostDetailResDto.builder()
-                .id(post.getId())
-                .createdDate(post.getCreatedDate())
-                .modefiedDate(post.getModifiedDate())
-                .subject(post.getSubject())
-                .content(post.getContent())
-                .likecount(post.getLikecount())
-                .readcount(post.getReadcount())
-                .build();
-
-    }
-
     // (게시물 등록) user_id로 User 가져오기
     private User getUserById(Long id) {
         return userRepository.findById(id)
@@ -92,6 +76,33 @@ public class PostService {
             postFileList.forEach(postFile -> savePost.addPostFile(postFileRepository.save(postFile)));
         }
         return postRepository.save(savePost).getId(); //post 저장 후 getId 하여 id값 리턴
+    }
+
+    //게시물 상세
+    @Transactional(readOnly = true)
+    public PostDetailResDto getPost(Long id) {
+        Post entity = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + id));
+        return new PostDetailResDto(entity);
+    }
+
+    //게시물 수정
+    @Transactional
+    public Long postUpdate(Long id, Optional<List<MultipartFile>> fileList, PostUpdateReqDto postUpdateReqDto) throws Exception {
+        Post updatePost = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + id));
+
+        if(!String.valueOf(updatePost.getUser().getId()).equals(postUpdateReqDto.getUserId())) {
+            throw new IllegalArgumentException("No Match User id = [Request] " + postUpdateReqDto.getUserId() + " & [Response] " + updatePost.getUser().getId().toString());
+        }
+
+        if(fileList.isPresent()) {
+            List<PostFile> postFileList = fileHandler.parsePostFileList(fileList.get(), "postfile");
+            postFileList.forEach(postFile -> updatePost.addPostFile(postFileRepository.save(postFile)));
+        }
+
+        updatePost.update(postUpdateReqDto.getSubject(), postUpdateReqDto.getContent());
+        return id;
     }
 
     //main 전체글보기 dto response service

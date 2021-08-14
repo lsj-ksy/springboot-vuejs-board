@@ -3,15 +3,14 @@ package com.sjsy.springvue.web;
 import com.sjsy.springvue.service.post.PostService;
 
 import com.sjsy.springvue.web.dto.response.PostDetailResDto;
+import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -29,6 +28,12 @@ public class PostApiController {
         return postService.findPostsBySearch(search);
     }
 
+    //게시물 상세보기
+    @GetMapping("/api/v1/post/{id}")
+    public ResponseEntity<PostDetailResDto> getPost(@PathVariable Long id) {
+        return new ResponseEntity<PostDetailResDto>(postService.getPost(id), HttpStatus.OK);
+    }
+
     //게시물 등록
     @PostMapping("/api/v1/post/save")
     public Long postSave(@RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
@@ -44,10 +49,12 @@ public class PostApiController {
         return postService.findAllByBoardInfo(board_type);
     }
 
-    //게시글 상세보기 response
-    @GetMapping("/api/v1/post/detail/{post_id}")
-    public PostDetailResDto postDetail(@PathVariable Long post_id) {
-        return postService.findPostById(post_id);
+    //게시물 수정
+    @PatchMapping("/api/v1/post/update/{id}")
+    public Long update(@PathVariable Long id,
+                       @RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
+                       PostUpdateReqDto postUpdateReqDto) {
+        return null;
     }
 
 }
