@@ -49,12 +49,6 @@ public class PostApiController {
         return postService.findAllByBoardInfo(board_type);
     }
 
-    //게시글 상세보기 response
-    @GetMapping("/api/v1/post/detail/{post_id}")
-    public PostDetailResDto postDetail(@PathVariable Long post_id) {
-        return postService.findPostById(post_id);
-    }
-
     //게시물 수정
     @PatchMapping("/api/v1/post/update/{id}")
     public Long update(@PathVariable Long id,

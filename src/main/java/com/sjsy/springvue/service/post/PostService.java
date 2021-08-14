@@ -10,6 +10,8 @@ import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
+import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
+import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -85,6 +87,7 @@ public class PostService {
     }
 
     //게시물 수정
+    @Transactional
     public Long postUpdate(Long id, Optional<List<MultipartFile>> fileList, PostUpdateReqDto postUpdateReqDto) throws Exception {
         Post updatePost = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + id));
@@ -101,6 +104,7 @@ public class PostService {
         updatePost.update(postUpdateReqDto.getSubject(), postUpdateReqDto.getContent());
         return id;
     }
+
     //main 전체글보기 dto response service
     @Transactional(readOnly = true)
     public List<PostsListResDto> findAllByBoardInfo(String boardType) {
