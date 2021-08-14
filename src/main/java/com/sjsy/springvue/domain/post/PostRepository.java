@@ -19,6 +19,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p where p.enabled = 1")
     List<Post> findAllByEnabled();
 
+    //게시판 글보기(BoardType 별)
+    //@Query("select p from Post p where p.enabled = 1 AND p.board.boardName = :boardType")
+    //List<Post> findAllByBoardInfo(String boardType);
+
+    @Query(value = "select * from board_post left join board_info bi on bi.id = board_post.board_id where board_name = \"test_board\" and board_post.enabled = 1", nativeQuery = true)
+    List<Post> findAllByBoardInfo(String boardType);
+
+
     //단어 검색으로 글 리스트 보기
     @Query("SELECT p FROM Post p WHERE p.subject LIKE CONCAT('%',:search,'%') and p.enabled = 1")
     List<Post> findPostsBySearch(String search);

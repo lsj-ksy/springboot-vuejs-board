@@ -1,14 +1,25 @@
 package com.sjsy.springvue.service.user;
 
+import com.sjsy.springvue.domain.main.Content;
+import com.sjsy.springvue.domain.main.ContentFile;
+import com.sjsy.springvue.domain.main.Title;
 import com.sjsy.springvue.domain.post.PostRepository;
 import com.sjsy.springvue.domain.post.PostScrapsRepository;
 import com.sjsy.springvue.domain.board.ReplyRepository;
 import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
+import com.sjsy.springvue.util.FileHandler;
+import com.sjsy.springvue.web.dto.request.MainSaveReqDto;
+import com.sjsy.springvue.web.dto.request.TitleFileSaveReqDto;
+import com.sjsy.springvue.web.dto.request.UserSidebarReqDto;
 import com.sjsy.springvue.web.dto.response.UserSidebarResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -19,6 +30,7 @@ public class UserService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
     private final PostScrapsRepository postScrapsRepository;
+    private final FileHandler fileHandler;
 
     //테스트 로그인용 함수
     @Transactional(readOnly = true)
@@ -27,6 +39,8 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("test login error"));
     }
 
+
+    //나의 활동 response service
     @Transactional(readOnly = true)
     public UserSidebarResDto user(Long id) {
 
@@ -48,6 +62,7 @@ public class UserService {
                 .build();
     }
 
+    //닉네임 중복 check service
     @Transactional(readOnly = true)
     public boolean checkNickname(String nickname) {
         int result = userRepository.findNickname(nickname);
@@ -59,5 +74,18 @@ public class UserService {
         }
     }
 
+    //닉네임 변경 request service
+    @Transactional(readOnly = true)
+    public void userNicknameUpdate( UserSidebarReqDto userSidebarReqDto) {
+        Optional<User> user = userRepository.findById(userSidebarReqDto.getId());
+
+        user.ifPresent( selectUser -> { //조회된 column 의 닉네임 set 하여 save & flush
+            selectUser.setNickname(userSidebarReqDto.getNickname());
+            userRepository.save(selectUser);
+            userRepository.flush(); //변동사항 적용
+        });
+
+
+    }
 
 }

@@ -4,6 +4,7 @@ import com.sjsy.springvue.domain.BaseTimeEntity;
 import com.sjsy.springvue.domain.board.Board;
 import com.sjsy.springvue.domain.board.Reply;
 import com.sjsy.springvue.domain.user.User;
+import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

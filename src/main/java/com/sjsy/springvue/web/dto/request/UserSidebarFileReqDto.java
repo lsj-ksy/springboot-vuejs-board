@@ -5,14 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UserSiderbarReqDto {
+public class UserSidebarFileReqDto {
 
     private String fileOriginName;
     private String fileName;
     private String filePath;
 
     @Builder
-    public UserSiderbarReqDto(String fileOriginName, String fileName, String filePath) {
+    public UserSidebarFileReqDto(String fileOriginName, String fileName, String filePath) {
         this.fileOriginName = fileOriginName;
         this.fileName = fileName;
         this.filePath = filePath;

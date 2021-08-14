@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div>
     <h3>파일 업로드 결과 (하드코딩 테스트용): </h3>
     <div>
@@ -10,6 +10,10 @@
     <div>
       <button @click="selectUploadFileForTitle()">타이틀 이미지 업로드</button>
     </div>
+    <div>
+      <button @click="updateNickname()">닉네임변경 test</button>
+    </div>
+
     <span>response : {{ response }}</span>
   </div>
 </template>
@@ -78,7 +82,7 @@ export default {
         formData.append('userId', 2);
         formData.append('boardId', 1);
         formData.append('subject', '메인파일업로드 테스트');
-        formData.append('content', '수연이 정말똑똑하네')
+        formData.append('content', 'ㅎㅎ')
         for (var index = 0; index < this.files.length; index++) {
           formData.append('files', this.files[index])
         }
@@ -106,7 +110,7 @@ export default {
         formData.append('userId', 2);
         formData.append('boardId', 1);
         formData.append('subject', '메인파일업로드 테스트');
-        formData.append('content', '수연아 행복해..?')
+        formData.append('content', '행복해')
         for (var index = 0; index < this.files.length; index++) {
           formData.append('files', this.files[index])
         }
@@ -116,6 +120,22 @@ export default {
           vue.response = error.message
         })
       }
+
+    },
+    updateNickname() {
+      var vue = this
+      let elem = document.createElement('input')
+      elem.type = 'text'
+
+      const formData = new FormData()
+      formData.append('id', 1);
+      formData.append('nickname', '이승준지존짱짱짱');
+      axios.patch('/api/v1/user/myinfo/update', formData).then(response => {
+        vue.response = response.data
+      }).catch(error => {
+        vue.response = error.message
+      })
+
 
     }
   } //컴포넌트 내에서 사용할 메소드 정의

@@ -2,8 +2,8 @@ package com.sjsy.springvue.web;
 
 import com.sjsy.springvue.service.post.PostService;
 
-import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
 import com.sjsy.springvue.web.dto.response.PostDetailResDto;
+import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +41,18 @@ public class PostApiController {
                          //Optional로 받는 이유는 필수 파라미터 아니므로 나중에 .isPresent()로 Null 여부 체크하여 fileList 있는 경우에만 파일 저장하려고
                          PostSaveReqDto postSaveReqDto) throws Exception {
         return postService.postSave(fileList, postSaveReqDto);
+    }
+
+    //항목별 게시글 리스트 api data response
+    @GetMapping("/api/v1/post/list/{board_type}")
+    public List<PostsListResDto> postList(@PathVariable String board_type) {
+        return postService.findAllByBoardInfo(board_type);
+    }
+
+    //게시글 상세보기 response
+    @GetMapping("/api/v1/post/detail/{post_id}")
+    public PostDetailResDto postDetail(@PathVariable Long post_id) {
+        return postService.findPostById(post_id);
     }
 
     //게시물 수정

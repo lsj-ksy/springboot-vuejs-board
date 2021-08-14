@@ -10,10 +10,7 @@ import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
-import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
-import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
-import jdk.internal.net.http.common.Log;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,5 +100,12 @@ public class PostService {
 
         updatePost.update(postUpdateReqDto.getSubject(), postUpdateReqDto.getContent());
         return id;
+    }
+    //main 전체글보기 dto response service
+    @Transactional(readOnly = true)
+    public List<PostsListResDto> findAllByBoardInfo(String boardType) {
+        return postRepository.findAllByBoardInfo(boardType).stream()
+                .map(PostsListResDto::new)
+                .collect(Collectors.toList());
     }
 }

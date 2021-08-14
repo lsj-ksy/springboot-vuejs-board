@@ -16,7 +16,6 @@ public class PostsListResDto {
     private int readCount;   //조회수
     private int likeCount;   //좋아요 수
 
-
     public PostsListResDto(Post entity) {
         this.id = entity.getId();
         this.nickname = entity.getUser().getNickname();
