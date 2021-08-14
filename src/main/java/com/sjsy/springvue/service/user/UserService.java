@@ -20,6 +20,13 @@ public class UserService {
     private final ReplyRepository replyRepository;
     private final PostScrapsRepository postScrapsRepository;
 
+    //테스트 로그인용 함수
+    @Transactional(readOnly = true)
+    public User testLogin(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("test login error"));
+    }
+
     @Transactional(readOnly = true)
     public UserSidebarResDto user(Long id) {
 

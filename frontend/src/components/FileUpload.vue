@@ -54,7 +54,7 @@ export default {
         for (var index = 0; index < this.files.length; index++) {
           formData.append('files', this.files[index])
         }
-        axios.post('/api/v1/postsave', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+        axios.post('/api/v1/post/save', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
           vue.response = response.data
         }).catch(error => {
           vue.response = error.message

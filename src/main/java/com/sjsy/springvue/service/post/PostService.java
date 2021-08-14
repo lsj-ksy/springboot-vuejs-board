@@ -10,7 +10,10 @@ import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
+import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
+import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
+import jdk.internal.net.http.common.Log;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,4 +79,29 @@ public class PostService {
         return postRepository.save(savePost).getId(); //post 저장 후 getId 하여 id값 리턴
     }
 
+    //게시물 상세
+    @Transactional(readOnly = true)
+    public PostDetailResDto getPost(Long id) {
+        Post entity = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + id));
+        return new PostDetailResDto(entity);
+    }
+
+    //게시물 수정
+    public Long postUpdate(Long id, Optional<List<MultipartFile>> fileList, PostUpdateReqDto postUpdateReqDto) throws Exception {
+        Post updatePost = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + id));
+
+        if(!String.valueOf(updatePost.getUser().getId()).equals(postUpdateReqDto.getUserId())) {
+            throw new IllegalArgumentException("No Match User id = [Request] " + postUpdateReqDto.getUserId() + " & [Response] " + updatePost.getUser().getId().toString());
+        }
+
+        if(fileList.isPresent()) {
+            List<PostFile> postFileList = fileHandler.parsePostFileList(fileList.get(), "postfile");
+            postFileList.forEach(postFile -> updatePost.addPostFile(postFileRepository.save(postFile)));
+        }
+
+        updatePost.update(postUpdateReqDto.getSubject(), postUpdateReqDto.getContent());
+        return id;
+    }
 }

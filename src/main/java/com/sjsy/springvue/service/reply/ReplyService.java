@@ -45,6 +45,7 @@ public class ReplyService {
         )).getId();
     }
 
+    //게시물 번호 > 댓글 리스트 가져오기
     @Transactional(readOnly = true)
     public List<ReplyListResDto> getReplyListByPostId(Long id) {
         return postRepository.findById(id).get().getReplyList().stream()
@@ -61,8 +62,17 @@ public class ReplyService {
         if(!String.valueOf(reply.getUser().getId()).equals(replyUpdateReqDto.getUserId())) {
             throw new IllegalArgumentException("No Match User id = [Request] " + replyUpdateReqDto.getUserId() + " & [Response] " + reply.getUser().getId().toString());
         }
+        reply.update(replyUpdateReqDto.getContent());
         return id;
     }
+
+    @Transactional
+    public void delete(Long id) {
+        Reply reply = replyRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found Reply id = " + id));
+        reply.setEnabled();
+    }
+
 
 
 }
