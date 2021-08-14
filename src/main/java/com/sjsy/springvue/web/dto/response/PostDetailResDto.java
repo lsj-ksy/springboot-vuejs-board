@@ -1,15 +1,12 @@
-package com.sjsy.springvue.web.dto.request;
+package com.sjsy.springvue.web.dto.response;
 
-import com.sjsy.springvue.domain.board.Board;
-import com.sjsy.springvue.domain.post.Post;
-import com.sjsy.springvue.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class PostDetailReqDto {
+public class PostDetailResDto {
 
     private Long id;                   //글번호
     private LocalDateTime createdDate; //쓴날짜
@@ -20,7 +17,7 @@ public class PostDetailReqDto {
     private int readcount;             //조회수
 
     @Builder
-    public PostDetailReqDto(Long id, LocalDateTime createdDate, LocalDateTime modefiedDate, String subject, String content, int likecount, int readcount) {
+    public PostDetailResDto(Long id, LocalDateTime createdDate, LocalDateTime modefiedDate, String subject, String content, int likecount, int readcount) {
         this.id = id;
         this.createdDate = createdDate;
         this.modefiedDate = modefiedDate;
