@@ -100,6 +100,12 @@ public class Post extends BaseTimeEntity {
             reply.setPostInfo(this);
     }
 
+    //Post update
+    public void update(String subject, String content) {
+        this.subject = subject;
+        this.content = content;
+    }
+
     //enabled default 1
     @PrePersist
     public void defaultEnabled() { //글작성시 enabled default 값은 1

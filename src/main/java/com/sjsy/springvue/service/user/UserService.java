@@ -32,6 +32,13 @@ public class UserService {
     private final PostScrapsRepository postScrapsRepository;
     private final FileHandler fileHandler;
 
+    //테스트 로그인용 함수
+    @Transactional(readOnly = true)
+    public User testLogin(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("test login error"));
+    }
+
 
     //나의 활동 response service
     @Transactional(readOnly = true)

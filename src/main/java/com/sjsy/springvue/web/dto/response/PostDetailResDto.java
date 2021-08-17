@@ -1,29 +1,34 @@
 package com.sjsy.springvue.web.dto.response;
 
+import com.sjsy.springvue.domain.post.Post;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 public class PostDetailResDto {
 
-    private Long id;                   //글번호
-    private LocalDateTime createdDate; //쓴날짜
-    private LocalDateTime modefiedDate;//수정한날짜(수정했을경우)
-    private String subject;            //제목
-    private String content;            //내용
-    private int likecount;             //좋아요 수수
-    private int readcount;             //조회수
+    private Long id;
+    private UserSimpleResDto user;
+    private String subject;
+    private String content;
+    private LocalDateTime modifiedDate;
+    private List<Long> postFileList = new ArrayList<>();
 
     @Builder
-    public PostDetailResDto(Long id, LocalDateTime createdDate, LocalDateTime modefiedDate, String subject, String content, int likecount, int readcount) {
-        this.id = id;
-        this.createdDate = createdDate;
-        this.modefiedDate = modefiedDate;
-        this.subject = subject;
-        this.content = content;
-        this.likecount = likecount;
-        this.readcount = readcount;
+    public PostDetailResDto(Post entity) {
+        this.id = entity.getId();
+        this.user = new UserSimpleResDto(entity.getUser());
+        this.subject = entity.getSubject();
+        this.content = entity.getContent();
+        this.modifiedDate = entity.getModifiedDate();
+
+        entity.getPostFileList().forEach(postFile -> this.postFileList.add(postFile.getId()));
+
     }
+
 }
