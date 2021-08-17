@@ -17,8 +17,18 @@
           </div>
         </div>
       </div>
-      <div>
-        <h1>사이트정보<br>나의정보</h1>
+      <div class="card">
+        <div class="card-body py-4 px-5">
+          <div class="d-flex align-items-center">
+            <div class="avatar avatar-xl">
+              <img src="https://i.stack.imgur.com/34AD2.jpg" alt="profilepicture">
+            </div>
+            <div class="ms-3 name">
+              <h5 class="font-bold">{{this.nickname}}</h5>
+              <h6 class="text-muted mb-0">{{this.createdDate}}</h6>
+            </div>
+          </div>
+        </div>
       </div>
       <a href="#" class="btn btn-lg btn-dark w-75">회원가입</a>
       <a href="#" class="btn btn-lg btn-dark w-75">글쓰기</a>
@@ -77,7 +87,13 @@ export default {
   components: {}, //다른 컴포넌트 사용 시 import(배열로 등록)
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
-      sampleData: ""
+      //test 하드코딩
+      userid : 1, //testuser id
+      nickname : null,
+      postCount : null,
+      scrapCount : null,
+      socialType : null,
+      createdDate : null
     };
   },
   setup() {
@@ -86,12 +102,25 @@ export default {
   }, //컴포넌트가 생성되면 실행
   mounted() {
     //main.js import for sidebar
-    import('../assets/js/main')
+    import('../assets/js/main') //
+    //api data
+    var testUser01 = 1;
+    this.getUserInfo(testUser01); //userInfo api data 호출
 
   }, //template에 정의된 html 코드가 랜더링된 후 실행
   unmounted() {
   }, //unmount가 완료된 후 실행
-  methods: {} //컴포넌트 내에서 사용할 메소드 정의
+  methods: {
+    async getUserInfo(user) { //파라미터 혹은 data에서 userid 받아와야함. 현재는 테스트코드
+      const userInfo = await this.$api(`http://localhost:8080//api/v1/user/myinfo/${user}`, 'get')
+      console.log(userInfo);
+      this.nickname = userInfo.nickname;
+      this.postCount = userInfo.postCount;
+      this.scrapCount = userInfo.scrapCount;
+      this.socialType = userInfo.socialType;
+      this.createdDate = userInfo.createdDate;
+    },
+  } //컴포넌트 내에서 사용할 메소드 정의
 }
 </script>
 

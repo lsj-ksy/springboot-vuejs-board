@@ -5,6 +5,7 @@ axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 export default {
     methods: {
+        //api mixins
         async $api(url, method, params) {
             return (await axios({
                 method: method,
