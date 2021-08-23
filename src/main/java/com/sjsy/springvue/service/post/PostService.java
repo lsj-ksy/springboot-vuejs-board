@@ -60,12 +60,27 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Board id = " + id));
     }
 
-    //게시물 등록
+    //게시물 등록(글쓰기, 답글쓰기)
     @Transactional
-    public Long postSave(Optional<List<MultipartFile>> fileList, PostSaveReqDto postSaveReqDto) throws Exception {
-        //Dto의 toEntity() 메서드를 통해 Post 타입으로 만들어주고
-        Post savePost = postSaveReqDto.toEntity(getUserById(Long.parseLong(postSaveReqDto.getUserId())),
-                                                getBoardById(Long.parseLong(postSaveReqDto.getBoardId())));
+    public Long postSave(String type, //등록 타입(글쓰기(write) || 답글쓰기(reply))
+                         Optional<List<MultipartFile>> fileList,
+                         PostSaveReqDto postSaveReqDto)
+            throws Exception {
+
+        Post savePost = null;
+
+        //type에 따라 Post 생성
+        if(type.equals("write")){
+            //새로 쓰여질 글의 ref 값
+            int ref = postRepository.findMaxRef() + 1;
+
+            savePost = postSaveReqDto.toEntity(getUserById(Long.parseLong(postSaveReqDto.getUserId())),
+                    getBoardById(Long.parseLong(postSaveReqDto.getBoardId())), ref);
+
+        } else { //type.equals("reply")
+            savePost = postSaveReqDto.toEntity(getUserById(Long.parseLong(postSaveReqDto.getUserId())),
+                    getBoardById(Long.parseLong(postSaveReqDto.getBoardId())));
+        }
 
         if(fileList.isPresent()) { //fileList가 Null이 아니라면 (첨부된 파일이 있다면)
 
@@ -73,7 +88,8 @@ public class PostService {
             List<PostFile> postFileList = fileHandler.parsePostFileList(fileList.get(), "postfile");
 
             //forEach 돌면서(파일이 1개이든 다중파일이든) postFile 저장됨
-            postFileList.forEach(postFile -> savePost.addPostFile(postFileRepository.save(postFile)));
+            Post finalSavePost = savePost;
+            postFileList.forEach(postFile -> finalSavePost.addPostFile(postFileRepository.save(postFile)));
         }
         return postRepository.save(savePost).getId(); //post 저장 후 getId 하여 id값 리턴
     }
