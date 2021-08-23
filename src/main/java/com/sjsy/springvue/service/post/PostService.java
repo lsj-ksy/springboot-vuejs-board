@@ -123,8 +123,8 @@ public class PostService {
 
     //main 전체글보기 dto response service
     @Transactional(readOnly = true)
-    public List<PostsListResDto> findAllByBoardInfo(String boardType) {
-        return postRepository.findAllByBoardInfo(boardType).stream()
+    public List<PostsListResDto> findAllByBoardInfo(String board_name) {
+        return postRepository.findAllByBoardInfo(board_name).stream()
                 .map(PostsListResDto::new)
                 .collect(Collectors.toList());
     }
