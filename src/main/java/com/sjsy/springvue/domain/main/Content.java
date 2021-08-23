@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "main_content")
 @Entity
-@ToString(exclude={"contentFilelist"})
 @DynamicInsert
 @DynamicUpdate
 public class Content {
