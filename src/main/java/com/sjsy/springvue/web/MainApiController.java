@@ -27,7 +27,7 @@ public class MainApiController {
     }
 
     //타이틀 사진 등록 request
-    @PostMapping("/api/v1/titlesave")
+    @PostMapping("/api/v1/title/save")
     public String titleSave(@RequestParam(value = "files", required = true) MultipartFile file, //required = false 필수 파라미터 아니라고 체크
                          TitleFileSaveReqDto titleFileSaveReqDto) throws Exception {
         mainService.titlePut(file, titleFileSaveReqDto);
@@ -43,7 +43,7 @@ public class MainApiController {
     }
 
     //게시물 등록 request
-    @PostMapping("/api/v1/mainsave")
+    @PostMapping("/api/v1/main/save")
     public Long mainSave(@RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
                          //required = false 필수 파라미터 아니라고 체크
                          //Optional로 받는 이유는 필수 파라미터 아니므로 나중에 .isPresent()로 Null 여부 체크하여 fileList 있는 경우에만 파일 저장하려고
@@ -52,7 +52,7 @@ public class MainApiController {
     }
 
     //대문 전체글보기 api data response
-    @GetMapping("/api/v1/mainlist")
+    @GetMapping("/api/v1/main/posts")
     public List<PostsListResDto> mainList() {
         return mainService.findAllByEnabled();
     }
