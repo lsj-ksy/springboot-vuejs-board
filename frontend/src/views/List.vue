@@ -1,0 +1,112 @@
+<template>
+  <div id="main">
+    <header class="mb-3">
+      <a href="#" class="burger-btn d-block d-xl-none">
+        <i class="bi bi-justify fs-3"></i>
+      </a>
+    </header>
+
+    <div class="page-heading">
+      <section class="section">
+        <div class="row" id="table-head">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">전체 게시판</h4>
+              </div>
+              <div class="card-content">
+                <div class="card-body">
+                  <p>
+                    사이트의 전체 게시글을 보실 수 있습니다
+                  </p>
+                </div>
+                <!-- table head dark -->
+                <div class="table-responsive">
+                  <table class="table mb-0">
+                    <thead class="thead-dark">
+                    <tr>
+                      <th>제목</th>
+                      <th>닉네임</th>
+                      <th>작성일</th>
+                      <th>좋아요</th>
+                      <th>조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 테이블내용 v-for -->
+                    <tr :key="i" v-for="(post,i) in postList">
+                      <td><router-link :to="`/postDetail/${post.id}`">{{ post.subject }}</router-link></td>
+                      <td>{{ post.nickname }}</td>
+                      <td>{{ moment(post.createdDate).format('YYYY-MM-DD HH:mm') }}
+                        ({{ this.testDay(moment(post.createdDate).day()) }})
+                      </td>
+                      <td>{{ post.likeCount }}</td>
+                      <td>{{ post.readCount }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <Bfooter/>
+  </div>
+</template>
+
+<script>
+
+import Bfooter from "@/layouts/BoardFooter";
+import moment from 'moment'
+
+export default {
+  name: 'List',
+  components: {
+    Bfooter
+  }, //다른 컴포넌트 사용 시 import(배열로 등록)
+  data() { //html과 js코드에서 사용할 데이터 변수 선언
+    return {
+      postDetailLink : '',
+      moment: moment,
+      postList: ''
+    };
+  },
+  methods: {
+    testDay(numberOfDay) {
+      var day = '';
+      switch (numberOfDay) {
+        case 0:
+          day = '일';
+          break;
+        case 1:
+          day = '월';
+          break;
+        case 2:
+          day = '화';
+          break;
+        case 3:
+          day = '수';
+          break;
+        case 4:
+          day = '목';
+          break;
+        case 5:
+          day = '금';
+          break;
+        case 6:
+          day = '토';
+          break;
+      }
+      return day;
+    },
+    async getList() {
+      this.postList = this.productList = await this.$api("http://localhost:8080/api/v1/main/posts", "get");
+    }
+  },
+  mounted() {
+    this.getList();
+  }
+}
+</script>

@@ -24,8 +24,8 @@
               <img src="https://i.stack.imgur.com/34AD2.jpg" alt="profilepicture">
             </div>
             <div class="ms-3 name">
-              <h5 class="font-bold">{{this.nickname}}</h5>
-              <h6 class="text-muted mb-0">{{this.createdDate}}</h6>
+              <h5 class="font-bold">{{userInfo.nickname}}</h5>
+              <h6 class="text-muted mb-0">{{userInfo.createdDate}}</h6>
             </div>
           </div>
         </div>
@@ -89,11 +89,7 @@ export default {
     return {
       //test 하드코딩
       userid : 1, //testuser id
-      nickname : null,
-      postCount : null,
-      scrapCount : null,
-      socialType : null,
-      createdDate : null
+      userInfo : ''
     };
   },
   setup() {
@@ -112,13 +108,7 @@ export default {
   }, //unmount가 완료된 후 실행
   methods: {
     async getUserInfo(user) { //파라미터 혹은 data에서 userid 받아와야함. 현재는 테스트코드
-      const userInfo = await this.$api(`http://localhost:8080//api/v1/user/myinfo/${user}`, 'get')
-      console.log(userInfo);
-      this.nickname = userInfo.nickname;
-      this.postCount = userInfo.postCount;
-      this.scrapCount = userInfo.scrapCount;
-      this.socialType = userInfo.socialType;
-      this.createdDate = userInfo.createdDate;
+      this.userInfo = await this.$api(`http://localhost:8080//api/v1/user/myinfo/${user}`, 'get')
     },
   } //컴포넌트 내에서 사용할 메소드 정의
 }
