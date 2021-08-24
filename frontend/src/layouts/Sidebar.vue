@@ -92,20 +92,13 @@ export default {
       userInfo : ''
     };
   },
-  setup() {
-  }, //컴포지션 API
-  created() {
-  }, //컴포넌트가 생성되면 실행
   mounted() {
     //main.js import for sidebar
     import('../assets/js/main') //
     //api data
     var testUser01 = 1;
     this.getUserInfo(testUser01); //userInfo api data 호출
-
   }, //template에 정의된 html 코드가 랜더링된 후 실행
-  unmounted() {
-  }, //unmount가 완료된 후 실행
   methods: {
     async getUserInfo(user) { //파라미터 혹은 data에서 userid 받아와야함. 현재는 테스트코드
       this.userInfo = await this.$api(`http://localhost:8080//api/v1/user/myinfo/${user}`, 'get')

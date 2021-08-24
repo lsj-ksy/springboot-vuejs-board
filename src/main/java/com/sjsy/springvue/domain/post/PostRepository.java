@@ -16,8 +16,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findPostsByUserid(Long id);
 
     //전체글보기(메인페이지)
-    @Query("select p from Post p where p.enabled = 1 order by p.ref desc, p.depth asc")
-    List<Post> findAllByEnabled();
+    @Query(value = "select * from board_post where enabled = 1 order by ref desc, depth asc limit :page , :perPage" , nativeQuery = true)
+    List<Post> findAllByEnabled(int page,int perPage);
 
     //게시판 글보기(Board_name 별, 글순서 및 답글순서 정렬)
     @Query(value = "select * from board_post left join board_info bi on bi.id = board_post.board_id " +
@@ -31,6 +31,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     //글쓰기 Ref값 구하기
     @Query(value = "select max(ref) from board_post", nativeQuery = true)
     int findMaxRef();
+
+    @Query(value = "select count(*) from board_post where enabled = 1",nativeQuery = true)
+    int countTotalPosts();
 
 
 }

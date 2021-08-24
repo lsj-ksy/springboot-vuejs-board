@@ -90,10 +90,19 @@ public class MainService {
 
     //main 전체글보기 dto response service
     @Transactional(readOnly = true)
-    public List<PostsListResDto> findAllByEnabled() {
-        return postRepository.findAllByEnabled().stream()
+    public List<PostsListResDto> findAllByEnabled(int page, int perPage) {
+
+        page = (page - 1) * 10 ;
+
+        return postRepository.findAllByEnabled(page, perPage).stream()
                 .map(PostsListResDto::new)
                 .collect(Collectors.toList());
+    }
+
+    //main 전체글 개수
+    @Transactional(readOnly = true)
+    public int findTotalCount() {
+        return postRepository.countTotalPosts();
     }
 
 
