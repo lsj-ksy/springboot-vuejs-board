@@ -25,6 +25,7 @@
                   <table class="table mb-0">
                     <thead class="thead-dark">
                     <tr>
+                      <th>No.</th>
                       <th>제목</th>
                       <th>닉네임</th>
                       <th>작성일</th>
@@ -35,7 +36,10 @@
                     <tbody>
                     <!-- 테이블내용 v-for -->
                     <tr :key="i" v-for="(post,i) in postList">
-                      <td><router-link :to="`/postDetail/${post.id}`">{{ post.subject }}</router-link></td>
+                      <td>{{ post.id }}</td>
+                      <td>
+                        <router-link :to="`/postDetail/${post.id}`">{{ post.subject }}</router-link>
+                      </td>
                       <td>{{ post.nickname }}</td>
                       <td>{{ moment(post.createdDate).format('YYYY-MM-DD HH:mm') }}
                         ({{ this.testDay(moment(post.createdDate).day()) }})
@@ -52,28 +56,38 @@
         </div>
       </section>
     </div>
+    <div class="align-center">
+      <pagination v-model="page" :records="this.totalPostsCount" :per-page="this.perPage" @paginate="myCallback"/>
+    </div>
     <Bfooter/>
   </div>
 </template>
 
 <script>
 
-import Bfooter from "@/layouts/BoardFooter";
+import Bfooter from '@/layouts/BoardFooter';
 import moment from 'moment'
+import Pagination from 'v-pagination-3'
 
 export default {
   name: 'List',
   components: {
-    Bfooter
+    Bfooter,
+    Pagination
   }, //다른 컴포넌트 사용 시 import(배열로 등록)
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
-      postDetailLink : '',
+      postDetailLink: '',
       moment: moment,
-      postList: ''
+      postList: '',
+      page: 1,
+      perPage: 10,
+      totalPostsCount: ''
     };
   },
   methods: {
+    myCallback() {
+    },
     testDay(numberOfDay) {
       var day = '';
       switch (numberOfDay) {
@@ -102,7 +116,14 @@ export default {
       return day;
     },
     async getList() {
-      this.postList = this.productList = await this.$api("http://localhost:8080/api/v1/main/posts", "get");
+      this.postList = await this.$api(`http://localhost:8080/api/v1/main/posts?page=${this.page}&perPage=${this.perPage}`, "get");
+      this.totalPostsCount = await this.$api('http://localhost:8080/api/v1/main/posts/totalCount', "get")
+    }
+  },
+  watch: {
+    async page() {
+      this.postList = await this.$api(`http://localhost:8080/api/v1/main/posts?page=${this.page}&perPage=${this.perPage}`, "get");
+      this.totalPostsCount = await this.$api('http://localhost:8080/api/v1/main/posts/totalCount', "get")
     }
   },
   mounted() {
