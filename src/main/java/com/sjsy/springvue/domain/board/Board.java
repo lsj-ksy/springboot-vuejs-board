@@ -1,10 +1,10 @@
 package com.sjsy.springvue.domain.board;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sjsy.springvue.domain.post.Post;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -23,6 +23,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -34,6 +35,7 @@ public class Board {
     @ColumnDefault("1")
     private int enabled;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<>();
 

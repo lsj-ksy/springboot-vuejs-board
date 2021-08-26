@@ -1,9 +1,7 @@
 package com.sjsy.springvue.domain.board;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -29,6 +27,7 @@ public class Category {
     @ColumnDefault("1")
     private int enabled;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Board> boardList = new ArrayList<>();
 
