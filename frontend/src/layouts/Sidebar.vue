@@ -10,7 +10,7 @@
       <div class="sidebar-header">
         <div class="d-flex justify-content-between">
           <div class="logo">
-            <a href="index.html"><img src="assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+            <a href="/"><img src="../assets/images/logo/templogo.png" alt="Logo" srcset=""></a>
           </div>
           <div class="toggler">
             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -25,7 +25,7 @@
             </div>
             <div class="ms-3 name">
               <h5 class="font-bold">{{userInfo.nickname}}</h5>
-              <h6 class="text-muted mb-0">{{userInfo.createdDate}}</h6>
+              <h6 class="text-muted mb-0" >{{ moment(userInfo.createdDate).format('YYYY-MM-DD') }}</h6>
             </div>
           </div>
         </div>
@@ -62,12 +62,14 @@
 
 <script>
 import "../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"
+import moment from 'moment' //Date formatting
 
 export default {
   name: "Sidebar", //컴포넌트 이름
   components: {}, //다른 컴포넌트 사용 시 import(배열로 등록)
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
+      moment: moment,
       //test 하드코딩
       userid : 1, //testuser id
       userInfo : '',

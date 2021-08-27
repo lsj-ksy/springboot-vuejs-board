@@ -7,7 +7,6 @@ import com.sjsy.springvue.web.dto.request.TitleFileSaveReqDto;
 import com.sjsy.springvue.web.dto.response.MainFileResDto;
 import com.sjsy.springvue.web.dto.response.MainResDto;
 import com.sjsy.springvue.web.dto.response.MainTitleResDto;
-import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,24 +85,5 @@ public class MainService {
         }
         return contentRepository.save(saveContent).getId(); //post 저장 후 getId 하여 id값 리턴
     }
-
-
-    //main 전체글보기 dto response service
-    @Transactional(readOnly = true)
-    public List<PostsListResDto> findAllByEnabled(int page, int perPage) {
-
-        page = (page - 1) * 10 ;
-
-        return postRepository.findAllByEnabled(page, perPage).stream()
-                .map(PostsListResDto::new)
-                .collect(Collectors.toList());
-    }
-
-    //main 전체글 개수
-    @Transactional(readOnly = true)
-    public int findTotalCount() {
-        return postRepository.countTotalPosts();
-    }
-
 
 }

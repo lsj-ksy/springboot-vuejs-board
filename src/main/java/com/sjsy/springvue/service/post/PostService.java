@@ -121,26 +121,14 @@ public class PostService {
         return id;
     }
 
-
-    //main 전체글보기 dto response service
-    @Transactional(readOnly = true)
-    public List<PostsListResDto> findAllByEnabled(Long board_id, int page, int perPage) {
-
-        page = (page - 1) * 10 ;
-
-        return postRepository.findAllByEnabled(page, perPage).stream()
-                .map(PostsListResDto::new)
-                .collect(Collectors.toList());
-    }
-
-    //main 전체글보기 dto response service
+    //게시판 게시글 리스트 dto response service
     @Transactional(readOnly = true)
     public List<PostsListResDto> findAllByBoardId(Long boardId, int page, int perPage) {
 
         page = (page - 1) * 10 ;
 
         if(boardId == 0) { //전체글보기
-            return postRepository.findAllByEnabled(page, perPage).stream()
+            return postRepository.findAllByBoardId(page, perPage).stream()
                     .map(PostsListResDto::new)
                     .collect(Collectors.toList());
         } else { //게시판 종류별 글보기
@@ -149,4 +137,16 @@ public class PostService {
                     .collect(Collectors.toList());
         }
     }
+
+    //전체게시판 글 개수 || 게시판 별 글 개수
+    @Transactional(readOnly = true)
+    public int findTotalCount(Long boardId) {
+        if(boardId == 0) { //전체 게시판 글 개수
+            return postRepository.countTotalPosts();
+        } else {  //게시판 별 글 개수
+            return postRepository.countTotalPosts(boardId);
+        }
+    }
+
+
 }

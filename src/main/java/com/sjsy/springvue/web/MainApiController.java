@@ -51,18 +51,4 @@ public class MainApiController {
         return mainService.mainSave(fileList, mainSaveReqDto);
     }
 
-    //대문 전체글보기 api data response
-    @GetMapping("/api/v1/main/posts")
-    public List<PostsListResDto> mainList(@RequestParam("page") int page, @RequestParam("per_page") int perPage) {
-
-        return mainService.findAllByEnabled(page, perPage);
-    }
-
-    @GetMapping("/api/v1/main/posts/totalCount")
-    public int mainListTotalCount() {
-        return mainService.findTotalCount();
-    }
-
-
-
 }

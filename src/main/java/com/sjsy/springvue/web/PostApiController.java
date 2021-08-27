@@ -44,13 +44,18 @@ public class PostApiController {
         return postService.postSave(type, fileList, postSaveReqDto);
     }
 
-
     //항목별 게시글 리스트 api data response
     @GetMapping("/api/v1/post/list")
     public List<PostsListResDto> postList(@RequestParam("board_id") Long boardId,
                                           @RequestParam("page") int page,
                                           @RequestParam("per_page") int perPage) {
         return postService.findAllByBoardId(boardId, page, perPage);
+    }
+
+    //항목별 게시글 수 api data response
+    @GetMapping("/api/v1/post/totalCount")
+    public int mainListTotalCount(@RequestParam("board_id") Long boardId) {
+        return postService.findTotalCount(boardId);
     }
 
     //게시물 수정

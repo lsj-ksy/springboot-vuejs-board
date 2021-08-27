@@ -12,7 +12,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title">전체 게시판</h4>
+                <h4 class="card-title"></h4>
               </div>
               <div class="card-content">
                 <div class="card-body">
@@ -66,7 +66,7 @@
 <script>
 
 import Bfooter from '@/layouts/BoardFooter';
-import moment from 'moment'
+import moment from 'moment' //Date formatting
 import Pagination from 'v-pagination-3'
 
 export default {
@@ -77,13 +77,13 @@ export default {
   }, //다른 컴포넌트 사용 시 import(배열로 등록)
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
-      postDetailLink: '',
-      moment: moment,
-      postList: '',
-      page: 1,
-      perPage: 10,
-      totalPostsCount: '',
-      boardId: this.$route.params.id
+      moment: moment, //날짜 포맷 moment.js
+      postList: '',   //게시글 리스트
+      page: 1,        //보고있는 페이지 default 1
+      perPage: 10,    //페이지당 게시글 갯수
+      totalPostsCount: '',  //총 게시글 수
+      categoryName : '',    //해당 게시판 카테고리 이름
+      boardName : '' //해당 게시판 이름
     };
   },
   methods: {
@@ -119,12 +119,19 @@ export default {
     },
     async getList(boardId) {
       this.postList = await this.$api(`http://localhost:8080/api/v1/post/list?board_id=${boardId}&page=${this.page}&per_page=${this.perPage}`, "get");
-      this.totalPostsCount = await this.$api('http://localhost:8080/api/v1/main/posts/totalCount', "get")
+      this.totalPostsCount = await this.$api(`http://localhost:8080/api/v1/post/totalCount?board_id=${boardId}`, "get")
     }
   },
+  computed : {
+    boardId() {
+      return this.$route.params.id;
+    }
+
+  },
   watch: {
-    async boardId() {
-      await this.getList(this.boardId)
+    boardId() { //다른 게시판으로 이동시 boardId가 변경된걸 감지해서 다시 리스트를 불러옴
+      this.getList(this.boardId)
+      this.page = 1; //page 초기화
     },
     async page() {
       await this.getList(this.boardId)
