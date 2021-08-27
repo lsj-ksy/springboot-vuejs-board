@@ -40,4 +40,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "select count(*) from board_post where enabled = 1 and board_id = :boardId",nativeQuery = true)
     int countTotalPosts(Long boardId);
 
+    //게시판이 속한 카테고리 이름
+    @Query(value = "select category_name from board_category where id = (select category_id from board_info where id = :boardId)", nativeQuery = true)
+    String findCategoryByBoardId(Long boardId);
+
+    //게시판 이름
+    @Query(value = "select board_name from board_info where id = :boardId", nativeQuery = true)
+    String findBoardId(Long boardId);
+
+
+
+
 }

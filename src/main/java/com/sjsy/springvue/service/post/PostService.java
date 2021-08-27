@@ -11,6 +11,7 @@ import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
 import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
+import com.sjsy.springvue.web.dto.response.BoardResDto;
 import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
@@ -123,18 +124,33 @@ public class PostService {
 
     //게시판 게시글 리스트 dto response service
     @Transactional(readOnly = true)
-    public List<PostsListResDto> findAllByBoardId(Long boardId, int page, int perPage) {
+    public BoardResDto findAllByBoardId(Long boardId, int page, int perPage) {
 
         page = (page - 1) * 10 ;
 
         if(boardId == 0) { //전체글보기
-            return postRepository.findAllByBoardId(page, perPage).stream()
+
+            //전체글 리스트
+            List<PostsListResDto> postsListResDto = postRepository.findAllByBoardId(page, perPage).stream()
                     .map(PostsListResDto::new)
                     .collect(Collectors.toList());
+
+            return BoardResDto.builder().categoryName("전체 게시판").boardName("전체 게시판").postList(postsListResDto).build();
+
         } else { //게시판 종류별 글보기
-            return postRepository.findAllByBoardId(boardId, page, perPage).stream()
+
+            //게시판 카테고리
+            String categoryName = postRepository.findCategoryByBoardId(boardId);
+
+            //게시판 이름
+            String boardName = postRepository.findBoardId(boardId);
+
+            //게시판 종류에 따른 게시글 리스트
+            List<PostsListResDto> postsListResDto =postRepository.findAllByBoardId(boardId, page, perPage).stream()
                     .map(PostsListResDto::new)
                     .collect(Collectors.toList());
+
+            return BoardResDto.builder().categoryName(categoryName).boardName(boardName).postList(postsListResDto).build();
         }
     }
 

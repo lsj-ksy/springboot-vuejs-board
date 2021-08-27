@@ -12,12 +12,12 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title"></h4>
+                <h4 class="card-title">{{postList.categoryName}}</h4>
               </div>
               <div class="card-content">
                 <div class="card-body">
                   <p>
-                    사이트의 전체 게시글을 보실 수 있습니다
+                    {{postList.boardName}}
                   </p>
                 </div>
                 <!-- table head dark -->
@@ -35,7 +35,7 @@
                     </thead>
                     <tbody>
                     <!-- 테이블내용 v-for -->
-                    <tr :key="i" v-for="(post,i) in postList">
+                    <tr :key="i" v-for="(post,i) in postList.postList">
                       <td>{{ post.id }}</td>
                       <td>
                         <router-link :to="`/post_detail/${post.id}`">{{ post.subject }}</router-link>
