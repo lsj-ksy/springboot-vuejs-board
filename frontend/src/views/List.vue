@@ -38,11 +38,11 @@
                     <tr :key="i" v-for="(post,i) in postList">
                       <td>{{ post.id }}</td>
                       <td>
-                        <router-link :to="`/postDetail/${post.id}`">{{ post.subject }}</router-link>
+                        <router-link :to="`/post_detail/${post.id}`">{{ post.subject }}</router-link>
                       </td>
                       <td>{{ post.nickname }}</td>
                       <td>{{ moment(post.createdDate).format('YYYY-MM-DD HH:mm') }}
-                        ({{ this.testDay(moment(post.createdDate).day()) }})
+                        ({{ this.korDay(moment(post.createdDate).day()) }})
                       </td>
                       <td>{{ post.likeCount }}</td>
                       <td>{{ post.readCount }}</td>
@@ -82,13 +82,15 @@ export default {
       postList: '',
       page: 1,
       perPage: 10,
-      totalPostsCount: ''
+      totalPostsCount: '',
+      boardId: this.$route.params.id
     };
   },
   methods: {
     myCallback() {
+      //Page 클릭시 호출할 수 있는 callback 함수. page를 watch 해서 사용하고있기 때문에 지금은 필요없음
     },
-    testDay(numberOfDay) {
+    korDay(numberOfDay) {
       var day = '';
       switch (numberOfDay) {
         case 0:
@@ -115,19 +117,21 @@ export default {
       }
       return day;
     },
-    async getList() {
-      this.postList = await this.$api(`http://localhost:8080/api/v1/main/posts?page=${this.page}&perPage=${this.perPage}`, "get");
+    async getList(boardId) {
+      this.postList = await this.$api(`http://localhost:8080/api/v1/post/list?board_id=${boardId}&page=${this.page}&per_page=${this.perPage}`, "get");
       this.totalPostsCount = await this.$api('http://localhost:8080/api/v1/main/posts/totalCount', "get")
     }
   },
   watch: {
+    async boardId() {
+      await this.getList(this.boardId)
+    },
     async page() {
-      this.postList = await this.$api(`http://localhost:8080/api/v1/main/posts?page=${this.page}&perPage=${this.perPage}`, "get");
-      this.totalPostsCount = await this.$api('http://localhost:8080/api/v1/main/posts/totalCount', "get")
+      await this.getList(this.boardId)
     }
   },
   mounted() {
-    this.getList();
+    this.getList(this.boardId);
   }
 }
 </script>

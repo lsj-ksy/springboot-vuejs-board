@@ -53,7 +53,7 @@ public class MainApiController {
 
     //대문 전체글보기 api data response
     @GetMapping("/api/v1/main/posts")
-    public List<PostsListResDto> mainList(@RequestParam("page") int page, @RequestParam("perPage") int perPage) {
+    public List<PostsListResDto> mainList(@RequestParam("page") int page, @RequestParam("per_page") int perPage) {
 
         return mainService.findAllByEnabled(page, perPage);
     }

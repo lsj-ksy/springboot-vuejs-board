@@ -3,7 +3,7 @@
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <router-link to="/list">list</router-link>
+    <router-link to="/list/0">list</router-link>
   </div>
   <router-view/>
   <bfooter/>
