@@ -124,9 +124,12 @@ export default {
   },
   computed : {
     boardId() {
-      return this.$route.params.id;
+      if(this.$route.params.id === undefined) {
+        return 0;
+      } else {
+        return this.$route.params.id;
+      }
     }
-
   },
   watch: {
     boardId() { //다른 게시판으로 이동시 boardId가 변경된걸 감지해서 다시 리스트를 불러옴

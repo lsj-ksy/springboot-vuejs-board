@@ -1,13 +1,15 @@
 <template>
+  <header-title/>
   <sidebar/>
   <router-view/>
   <bfooter/>
 </template>
 
 <script>
+  import HeaderTitle from "@/layouts/HeaderTitle";
   import Sidebar from "@/layouts/Sidebar";
   export default {
-    components: {Sidebar}
+    components: {HeaderTitle, Sidebar}
   }
 
 </script>
