@@ -2,6 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h1>{{ testHello }}</h1>
+    <login-test />
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -32,8 +33,10 @@
 </template>
 
 <script>
+import LoginTest from "@/components/LoginTest";
 export default {
   name: 'HelloWorld',
+  components: {LoginTest},
   props: {
     msg: String
   },

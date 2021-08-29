@@ -84,6 +84,14 @@ public class User extends BaseTimeEntity {
         this.profileImg = profileImg;
     }
 
+    public User update(String name, String picture, String email) {
+        this.username = name;
+        this.profileImg = picture;
+        this.email = email;
+
+        return this;
+    }
+
     //enabled default 1
     @PrePersist
     public void defaultEnabled() { //글작성시 enabled default 값은 1

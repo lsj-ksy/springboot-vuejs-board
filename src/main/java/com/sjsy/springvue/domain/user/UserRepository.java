@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.nickname = :nickname")
     int findNickname(String nickname);
 
+    //로그인에 사용될 소셜키로 가입여부 체크(옵셔널)
+    Optional<User> findBySocialKey(String socialKey);
+
 }
