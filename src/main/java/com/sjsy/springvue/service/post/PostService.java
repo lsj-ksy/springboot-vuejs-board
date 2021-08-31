@@ -13,6 +13,7 @@ import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
 import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
 import com.sjsy.springvue.web.dto.response.BoardResDto;
 import com.sjsy.springvue.web.dto.response.PostDetailResDto;
+import com.sjsy.springvue.web.dto.response.PostWriteResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -101,6 +102,15 @@ public class PostService {
         Post entity = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + id));
         return new PostDetailResDto(entity);
+    }
+
+    //게시글 작성 페이지 이동 response
+    @Transactional(readOnly = true)
+    public PostWriteResDto postSaveForm(String category) {
+
+        PostWriteResDto.builder().build();
+
+        return null;
     }
 
     //게시물 수정

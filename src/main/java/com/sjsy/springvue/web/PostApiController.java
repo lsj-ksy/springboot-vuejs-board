@@ -5,6 +5,7 @@ import com.sjsy.springvue.service.post.PostService;
 import com.sjsy.springvue.web.dto.response.BoardResDto;
 import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
+import com.sjsy.springvue.web.dto.response.PostWriteResDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class PostApiController {
         return new ResponseEntity<PostDetailResDto>(postService.getPost(id), HttpStatus.OK);
     }
 
-    //게시물 등록
+    //게시물 등록 request
     @PostMapping("/api/v1/post/{type}")
     public Long postSave(@PathVariable String type, //글쓰기(write), 답글쓰기(reply) type
                          @RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
