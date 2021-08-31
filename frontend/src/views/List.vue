@@ -5,21 +5,16 @@
         <i class="bi bi-justify fs-3"></i>
       </a>
     </header>
-
     <div class="page-heading">
       <section class="section">
         <div class="row" id="table-head">
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h4 class="card-title">{{postList.categoryName}}</h4>
+                <h4 class="card-title"> {{ postList.categoryName }}
+                  <span style="font-size: 75%;"> > {{ postList.boardName }}</span></h4>
               </div>
               <div class="card-content">
-                <div class="card-body">
-                  <p>
-                    {{postList.boardName}}
-                  </p>
-                </div>
                 <!-- table head dark -->
                 <div class="table-responsive">
                   <table class="table mb-0">
@@ -55,6 +50,9 @@
           </div>
         </div>
       </section>
+      <div class="right-btn">
+        <router-link class="btn btn-outline-success mt-1 mb-10" :to="`/post_write/${categoryId}/${boardId}`">글쓰기</router-link>
+      </div>
     </div>
     <div class="align-center">
       <pagination v-model="page" :records="this.totalPostsCount" :per-page="this.perPage" @paginate="myCallback"/>
@@ -81,9 +79,7 @@ export default {
       postList: '',   //게시글 리스트
       page: 1,        //보고있는 페이지 default 1
       perPage: 10,    //페이지당 게시글 갯수
-      totalPostsCount: '',  //총 게시글 수
-      categoryName : '',    //해당 게시판 카테고리 이름
-      boardName : '' //해당 게시판 이름
+      totalPostsCount: ''  //총 게시글 수
     };
   },
   methods: {
@@ -122,12 +118,19 @@ export default {
       this.totalPostsCount = await this.$api(`http://localhost:8080/api/v1/post/totalCount?board_id=${boardId}`, "get")
     }
   },
-  computed : {
+  computed: {
     boardId() {
-      if(this.$route.params.id === undefined) {
+      if (this.$route.params.boardId === undefined) {
         return 0;
       } else {
-        return this.$route.params.id;
+        return this.$route.params.boardId;
+      }
+    },
+    categoryId() {
+      if (this.$route.params.categoryId === undefined) {
+        return 0;
+      } else {
+        return this.$route.params.categoryId;
       }
     }
   },

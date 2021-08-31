@@ -1,5 +1,5 @@
 <template>
-<!--  버튼위치 조정해야합니다!-->
+  <!--  버튼위치 조정해야합니다!-->
   <header class="mb-3">
     <a href="#" class="burger-btn d-block d-xl-none">
       <i class="bi bi-justify fs-3"></i>
@@ -30,13 +30,14 @@
           </div>
         </div>
       </div>
+      <router-link  class="btn btn-lg btn-dark w-75" :to="`/post_write/0/0`"> 글쓰기 </router-link>
+
       <a href="#" class="btn btn-lg btn-dark w-75">회원가입</a>
-      <a href="#" class="btn btn-lg btn-dark w-75">글쓰기</a>
       <div class="sidebar-menu">
         <ul class="menu">
 
           <li class="sidebar-title">
-            <router-link :to="`/list/0`"> 전체 게시판 </router-link>
+            <router-link :to="`/list/0/0`"> 전체 게시판 </router-link>
 
           </li>
 
@@ -49,7 +50,7 @@
             <!-- Boards -->
             <ul class="submenu ">
               <li class="submenu-item " :key="i" v-for="(board,i) in category.boards"  >
-                <router-link :to="`/list/${board.id}`">{{board.boardName}}</router-link>
+                <router-link :to="`/list/${category.categoryId}/${board.id}`">{{board.boardName}}</router-link>
               </li>
             </ul>
           </li>
@@ -80,7 +81,7 @@ export default {
     this.$nextTick(function () {
       // 전체 화면내용이 다시 렌더링된 후에 아래의 코드가 실행됩니다.
       import('../assets/js/main')
-    })
+    });
   },
   mounted() {
     var testUser01 = 1;
@@ -94,15 +95,24 @@ export default {
     },
     async getSidebarBoards() {
       this.sidebarBoards = await this.$api('http://localhost:8080/api/v1/sidebar/board', 'get')
+    },
+    sendCategories() {
+      this.$emit('categories', this.sidebarBoards);
     }
-  } //컴포넌트 내에서 사용할 메소드 정의
+  },
+  watch : {
+    sidebarBoards() {
+      this.sendCategories(); //category 목록 부모컴포넌트로 보내기
+    }
+  }
 }
 </script>
 
 <style>
-  @import '../assets/vendors/iconly/bold.css';
-  @import '../assets/vendors/perfect-scrollbar/perfect-scrollbar.css';
-  @import '../assets/vendors/bootstrap-icons/bootstrap-icons.css';
-  @import '../assets/css/app.css';
+@import '../assets/vendors/iconly/bold.css';
+@import '../assets/vendors/perfect-scrollbar/perfect-scrollbar.css';
+@import '../assets/vendors/bootstrap-icons/bootstrap-icons.css';
+@import '../assets/css/app.css';
+
 </style>
 
