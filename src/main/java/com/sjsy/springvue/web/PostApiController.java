@@ -36,7 +36,7 @@ public class PostApiController {
         return new ResponseEntity<PostDetailResDto>(postService.getPost(id), HttpStatus.OK);
     }
 
-    //게시물 등록 request
+    //글 등록 request
     @PostMapping("/api/v1/post/{type}")
     public Long postSave(@PathVariable String type, //글쓰기(write), 답글쓰기(reply) type
                          @RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
