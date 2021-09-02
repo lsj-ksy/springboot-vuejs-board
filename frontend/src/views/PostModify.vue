@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div id="main">
+      <h1>{{postDetail}}</h1>
       <div class="row">
         <div class="col-md-6 mb-3">
           <!-- 게시판 글쓰기 카테고리 & 게시판 선택 input start -->
@@ -32,12 +33,12 @@
 
       <!-- 파일 업로드 -->
       <div class="mb-3 mt-1">
-        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="filesUpload(this.formData)">파일첨부</a>
+        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="testUploadButtonTest(this.formData)">파일첨부</a>
       </div>
 
       <!-- 글쓰기 버튼 -->
       <div>
-        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="postWrite( this.formData)">글쓰기</a>
+        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="testFormdata( this.formData)">글쓰기</a>
       </div>
     </div>
   </div>
@@ -52,6 +53,7 @@ export default {
   name: 'app',
   data() {
     return {
+      response: '',
       subject: '', //글제목
       editor: ClassicEditor,
       editorData: '',
@@ -63,10 +65,15 @@ export default {
       ref: 0, //글쓰기 기본값
       depth: 0, //글쓰기 기본값
       elem: '',
-      formData: new FormData()
+      formData: new FormData(),
+      postDetail: this.$route.params.postDetail,
     };
   },
   methods: {
+    testEditor() {
+      console.log(this.subject);
+      console.log(this.editorData);
+    },
     //카테고리 선택시 게시판 목록 불러오는 함수
     setBoardByCategory() {
       for (var i = 0; i < this.categories.length; i++) {
@@ -76,7 +83,37 @@ export default {
         }
       }
     },
-    filesUpload(formData) { //파일첨부
+    selectUploadFile() {
+      var vue = this
+      //let elem = document.getElementById('formFileMultiple')
+      let elem = document.createElement('input')
+      // 이미지 파일 업로드 / 동시에 여러 파일 업로드
+      elem.id = 'image'
+      elem.type = 'file'
+      elem.accept = 'image/*'
+      elem.multiple = true
+
+      const formData = new FormData()
+
+      for (var index = 0; index < this.files.length; index++) {
+        formData.append('files', this.files[index])
+      }
+
+      // 이벤트 감지
+      formData.append('userId', 2); //TEST용 userId 하드코딩
+      formData.append('boardId', this.$route.params.boardId);  //글쓰는 boardId
+      formData.append('subject', this.subject);  //글제목
+      formData.append('content', this.editorData); //글내용
+      formData.append('ref', 0);
+      formData.append('depth', 0);
+
+      axios.post('/api/v1/post/write', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+        vue.response = response.data
+      }).catch(error => {
+        vue.response = error.message
+      })
+    },
+    testUploadButtonTest(formData) {
       let elem = document.createElement('input')
       // 이미지 파일 업로드 / 동시에 여러 파일 업로드
       elem.id = 'image'
@@ -93,7 +130,7 @@ export default {
 
       this.elem = elem;
     },
-    postWrite(formData) {  //글쓰기
+    testFormdata(formData) {
 
       formData.append('userId', 2);
       formData.append('boardId', this.$route.params.boardId);
@@ -109,10 +146,43 @@ export default {
         console.log(error.message) //error발생시 메세지출력
       })
     },
+    testUploadFile() {
+      console.log(this.subject);
+      var vue = this
+      let elem = document.createElement('input')
+      // 이미지 파일 업로드 / 동시에 여러 파일 업로드
+      elem.id = 'image'
+      elem.type = 'file'
+      elem.accept = 'image/*'
+      elem.multiple = true
+      // 클릭
+      elem.click();
+      const formData = new FormData()
+      formData.append('userId', 2);
+      formData.append('boardId', this.$route.params.boardId);
+      formData.append('subject', this.subject);
+      formData.append('content', this.editorData)
+      formData.append('ref', 0);
+      formData.append('depth', 0);
+      // 이벤트 감지
+      elem.onchange = function () {
+        for (var index = 0; index < this.files.length; index++) {
+          formData.append('files', this.files[index])
+        }
+
+        axios.post('/api/v1/post/write', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+          vue.response = response.data
+        }).catch(error => {
+          vue.response = error.message
+        })
+      }
+
+    },
   },
   mounted() {
     //선택된 카테고리에 따른 게시판 목록
     this.setBoardByCategory()
+    console.log(this.postDetail)
   },
   watch: {
     selectedCategory() {
