@@ -32,12 +32,12 @@
 
       <!-- 파일 업로드 -->
       <div class="mb-3 mt-1">
-        <input class="form-control" type="file" id="formFileMultiple" multiple="">
+        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="testUploadButtonTest(this.formData)">파일첨부</a>
       </div>
 
       <!-- 글쓰기 버튼 -->
       <div>
-        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="testUploadFile()">글쓰기</a>
+        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="testFormdata( this.formData)">글쓰기</a>
       </div>
     </div>
   </div>
@@ -62,7 +62,9 @@ export default {
       selectedCategory: this.$route.params.categoryId, //파라미터로 받아온 선택된 카테고리
       boardByCategory: '',
       ref: 0, //글쓰기 기본값
-      depth: 0 //글쓰기 기본값
+      depth: 0, //글쓰기 기본값
+      elem: '',
+      formData: new FormData()
     };
   },
   methods: {
@@ -108,6 +110,41 @@ export default {
       }).catch(error => {
         vue.response = error.message
       })
+    },
+    testUploadButtonTest(formData) {
+      let elem = document.createElement('input')
+      // 이미지 파일 업로드 / 동시에 여러 파일 업로드
+      elem.id = 'image'
+      elem.type = 'file'
+      elem.accept = 'image/*'
+      elem.multiple = true
+
+      elem.onchange = function () {
+        for (var index = 0; index < this.files.length; index++) {
+          formData.append('files', this.files[index])
+        }
+      }
+      elem.click();
+
+      this.elem = elem;
+    },
+    testFormdata(formData) {
+
+      formData.append('userId', 2);
+      formData.append('boardId', this.$route.params.boardId);
+      formData.append('subject', this.subject);
+      formData.append('content', this.editorData)
+      formData.append('ref', 0);
+      formData.append('depth', 0);
+
+      axios.post('/api/v1/post/write', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+        this.$router.push(`/post_detail/${response.data}`); //글쓰기 성공시 상세보기 이동
+      }).catch(error => {
+        alert('글쓰기 도중 오류가 발생했습니다. console을 확인해주세요')
+        console.log(error.message) //error발생시 메세지출력
+      })
+
+      console.log('글쓰기 완료!! 확인해보세욥')
     },
     testUploadFile() {
       console.log(this.subject);
