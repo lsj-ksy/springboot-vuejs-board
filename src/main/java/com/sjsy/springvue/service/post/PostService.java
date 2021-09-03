@@ -104,15 +104,6 @@ public class PostService {
         return new PostDetailResDto(entity);
     }
 
-    //게시글 작성 페이지 이동 response
-    @Transactional(readOnly = true)
-    public PostWriteResDto postSaveForm(String category) {
-
-        PostWriteResDto.builder().build();
-
-        return null;
-    }
-
     //게시물 수정
     @Transactional
     public Long postUpdate(Long id, Optional<List<MultipartFile>> fileList, PostUpdateReqDto postUpdateReqDto) throws Exception {

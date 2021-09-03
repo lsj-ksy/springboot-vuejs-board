@@ -15,7 +15,7 @@ const routes = [
     component: () => import('../views/PostWrite')
   },
   {
-    path: '/post_modify/:postDetail',
+    path: '/post_modify/:id/:categoryId/:boardId',
     name: 'PostModify',
     component: () => import('../views/PostModify')
   },
