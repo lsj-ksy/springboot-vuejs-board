@@ -18,7 +18,6 @@
     methods : {
       categories(data) {
         this.categories = data;
-        console.log(this.categories)
       }
     }
   }

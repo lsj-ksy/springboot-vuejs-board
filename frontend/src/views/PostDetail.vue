@@ -16,15 +16,15 @@ export default {
     };
   },
   mounted() {
-    this.getPostDetail(this.$route.params.id)
+    this.getPostDetail()
   }, //unmount가 완료된 후 실행
   methods: {
-    async getPostDetail(postid) { //파라미터 혹은 data에서 userid 받아와야함. 현재는 테스트코드
-      this.postDetail = await this.$api(`http://localhost:8080/api/v1/post/${postid}`, 'get')
+    async getPostDetail() {
+      this.postDetail = await this.$api(`http://localhost:8080/api/v1/post/${this.$route.params.id}`, 'get')
       console.log(this.postDetail);
     },
     moveToModifyTest() {
-      this.$router.push(`/post_modify/${this.postDetail}`)
+      this.$router.push(`/post_modify/${this.$route.params.id}/${this.postDetail.categoryId}/${this.postDetail.boardId}`)
     }
   }
 }
