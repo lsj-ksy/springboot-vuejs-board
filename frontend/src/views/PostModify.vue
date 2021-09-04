@@ -34,12 +34,12 @@
 
       <!-- 파일 업로드 -->
       <div class="mb-3 mt-1">
-        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="filesUpload(this.formData)">파일첨부</a>
+        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="filesUploadUpdated(this.formData)">파일첨부</a>
       </div>
 
       <!-- 글쓰기 버튼 -->
       <div>
-        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="postWrite( this.formData)">글쓰기</a>
+        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="postUpdate( this.formData)">글쓰기</a>
       </div>
     </div>
   </div>
@@ -66,7 +66,8 @@ export default {
       depth: 0, //글쓰기 기본값
       elem: '',
       formData: new FormData(),
-      postDetail: ''
+      postDetail: '',
+      fileUpdated: false
     };
   },
   methods: {
@@ -84,7 +85,7 @@ export default {
       this.subject = this.postDetail.subject; //기존 제목
       this.editorData = this.postDetail.content; // 기존 내용
     },
-    filesUpload(formData) { //파일첨부
+    filesUploadUpdated(formData) { //파일첨부
       let elem = document.createElement('input')
       // 이미지 파일 업로드 / 동시에 여러 파일 업로드
       elem.id = 'image'
@@ -100,17 +101,21 @@ export default {
       elem.click();
 
       this.elem = elem;
+      this.fileUpdated = true; //파일수정 true
     },
-    postWrite(formData) {  //글쓰기
+    postUpdate(formData) {  //글쓰기
 
-      formData.append('userId', 2);
+      formData.append('userId', 2); //하드코딩
       formData.append('boardId', this.$route.params.boardId);
       formData.append('subject', this.subject);
       formData.append('content', this.editorData)
       formData.append('ref', 0);
       formData.append('depth', 0);
 
-      axios.post('/api/v1/post/write', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+      console.log(this.$route.params.boardId)
+      console.log(this.subject)
+      console.log(this.editorData)
+      axios.patch(`/api/v1/post/update/${this.$route.params.id}`, formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         this.$router.push(`/post_detail/${response.data}`); //글쓰기 성공시 상세보기 이동
       }).catch(error => {
         alert('글쓰기 도중 오류가 발생했습니다. console을 확인해주세요')

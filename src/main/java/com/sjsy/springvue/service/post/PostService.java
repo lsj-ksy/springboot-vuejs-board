@@ -11,6 +11,7 @@ import com.sjsy.springvue.domain.user.UserRepository;
 import com.sjsy.springvue.util.FileHandler;
 import com.sjsy.springvue.web.dto.request.PostSaveReqDto;
 import com.sjsy.springvue.web.dto.request.PostUpdateReqDto;
+import com.sjsy.springvue.web.dto.request.UserSidebarReqDto;
 import com.sjsy.springvue.web.dto.response.BoardResDto;
 import com.sjsy.springvue.web.dto.response.PostDetailResDto;
 import com.sjsy.springvue.web.dto.response.PostWriteResDto;
@@ -104,9 +105,25 @@ public class PostService {
         return new PostDetailResDto(entity);
     }
 
+
+    //닉네임 변경 request service
+    @Transactional(readOnly = true)
+    public void userNicknameUpdate( UserSidebarReqDto userSidebarReqDto) {
+        Optional<User> user = userRepository.findById(userSidebarReqDto.getId());
+
+        user.ifPresent( selectUser -> { //조회된 column 의 닉네임 set 하여 save & flush
+            selectUser.setNickname(userSidebarReqDto.getNickname());
+            userRepository.save(selectUser);
+            userRepository.flush(); //변동사항 적용
+        });
+
+
+    }
+
     //게시물 수정
     @Transactional
     public Long postUpdate(Long id, Optional<List<MultipartFile>> fileList, PostUpdateReqDto postUpdateReqDto) throws Exception {
+
         Post updatePost = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + id));
 
@@ -115,11 +132,27 @@ public class PostService {
         }
 
         if(fileList.isPresent()) {
+            List<PostFile> originPostFiles = postFileRepository.findAllById(id);
+            originPostFiles.forEach(postFile -> postFile.deleteFile());
             List<PostFile> postFileList = fileHandler.parsePostFileList(fileList.get(), "postfile");
             postFileList.forEach(postFile -> updatePost.addPostFile(postFileRepository.save(postFile)));
         }
 
-        updatePost.update(postUpdateReqDto.getSubject(), postUpdateReqDto.getContent());
+        //변동사항 체크한후에 적용
+        if(!updatePost.getSubject().equals(postUpdateReqDto.getSubject())) {
+            updatePost.setSubject(postUpdateReqDto.getSubject());
+        }
+        if(!updatePost.getContent().equals(postUpdateReqDto.getContent())) {
+            updatePost.setContent(postUpdateReqDto.getContent());
+        }
+        if(updatePost.getBoard().getId() != postUpdateReqDto.getBoardId()) {
+            updatePost.setBoard(boardRepository.findById(postUpdateReqDto.getBoardId()).get());
+        }
+
+        //JPA update
+        postRepository.save(updatePost);
+        postRepository.flush();
+
         return id;
     }
 
