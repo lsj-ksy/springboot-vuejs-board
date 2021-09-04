@@ -131,26 +131,30 @@ public class PostService {
             throw new IllegalArgumentException("No Match User id = [Request] " + postUpdateReqDto.getUserId() + " & [Response] " + updatePost.getUser().getId().toString());
         }
 
+        //파일을 새로 업로드했으면 변동사항 적용
         if(fileList.isPresent()) {
+            //원본파일 DB조회
             List<PostFile> originPostFiles = postFileRepository.findAllById(id);
+            //원본파일 post_id 삭제
             originPostFiles.forEach(postFile -> postFile.deleteFile());
+            //새로운파일 업로드 및 DB연동
             List<PostFile> postFileList = fileHandler.parsePostFileList(fileList.get(), "postfile");
             postFileList.forEach(postFile -> updatePost.addPostFile(postFileRepository.save(postFile)));
         }
 
         //변동사항 체크한후에 적용
-        if(!updatePost.getSubject().equals(postUpdateReqDto.getSubject())) {
+        if(!updatePost.getSubject().equals(postUpdateReqDto.getSubject())) { //제목 변경
             updatePost.setSubject(postUpdateReqDto.getSubject());
         }
-        if(!updatePost.getContent().equals(postUpdateReqDto.getContent())) {
+        if(!updatePost.getContent().equals(postUpdateReqDto.getContent())) { //내용 변경
             updatePost.setContent(postUpdateReqDto.getContent());
         }
-        if(updatePost.getBoard().getId() != postUpdateReqDto.getBoardId()) {
+        if(updatePost.getBoard().getId() != postUpdateReqDto.getBoardId()) { //카테고리 변경
             updatePost.setBoard(boardRepository.findById(postUpdateReqDto.getBoardId()).get());
         }
 
         //JPA update
-        postRepository.save(updatePost);
+        postRepository.save(updatePost); //jpa update 해줌
         postRepository.flush();
 
         return id;
