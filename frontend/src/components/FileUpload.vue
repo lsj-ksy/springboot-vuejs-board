@@ -32,14 +32,6 @@ export default {
       response: ""
     };
   },
-  setup() {
-  }, //컴포지션 API
-  created() {
-  }, //컴포넌트가 생성되면 실행
-  mounted() {
-  }, //template에 정의된 html 코드가 랜더링된 후 실행
-  unmounted() {
-  }, //unmount가 완료된 후 실행
   methods: {
     selectUploadFile() {
       var vue = this

@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <div id="main">
-      <h1>Post modify Demo page</h1>
-      <h1>{{ postDetail }}</h1>
       <div class="row">
         <div class="col-md-6 mb-3">
           <!-- 게시판 글쓰기 카테고리 & 게시판 선택 input start -->
@@ -148,10 +146,6 @@ export default {
   width: auto;
 }
 
-.right-btn {
-  float: right;
-}
-
 /*ckeditor 기본길이*/
 .ck-editor__editable {
   min-height: 500px;
@@ -160,6 +154,5 @@ export default {
 .form-select {
   margin-right: 1rem;
 }
-
 
 </style>
