@@ -97,10 +97,21 @@ public class Post extends BaseTimeEntity {
             reply.setPostInfo(this);
     }
 
-    //Post update
-    public void update(String subject, String content) {
+    public void clearFiles() {
+        postFileList.clear();
+    }
+
+    //제목수정 setter
+    public void setSubject(String subject) {
         this.subject = subject;
+    }
+    //내용수정 setter
+    public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     //enabled default 1

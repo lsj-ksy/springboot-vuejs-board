@@ -7,12 +7,12 @@ import lombok.Getter;
 public class PostUpdateReqDto {
 
     private String userId;
-    private String boardId;
+    private Long boardId;
     private String subject;
     private String content;
 
     @Builder
-    public PostUpdateReqDto(String userId, String boardId, String subject, String content) {
+    public PostUpdateReqDto(String userId, Long boardId, String subject, String content) {
         this.userId = userId;
         this.boardId = boardId;
         this.subject = subject;

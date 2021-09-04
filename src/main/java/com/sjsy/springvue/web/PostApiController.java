@@ -62,10 +62,12 @@ public class PostApiController {
 
     //게시물 수정
     @PatchMapping("/api/v1/post/update/{id}")
-    public Long update(@PathVariable Long id,
+    public Long update(@PathVariable Long id, //글번호
                        @RequestParam(value = "files", required = false) Optional<List<MultipartFile>> fileList,
-                       PostUpdateReqDto postUpdateReqDto) {
-        return null;
+                       PostUpdateReqDto postUpdateReqDto) throws Exception {
+
+        return postService.postUpdate(id,fileList,postUpdateReqDto);
+
     }
 
 }

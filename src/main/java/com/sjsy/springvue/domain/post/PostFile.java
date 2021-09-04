@@ -1,9 +1,6 @@
 package com.sjsy.springvue.domain.post;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "post_file")
 @Entity
+@ToString
 public class PostFile {
 
     @Id
@@ -42,6 +40,10 @@ public class PostFile {
         //파라미터로 들어온 post의 postFileList에 해당(this) postFile 이 들어있지 않다면
         if(!post.getPostFileList().contains(this))
             post.getPostFileList().add(this);
+    }
+
+    public void deleteFile() {
+        this.post = null;
     }
 
 }
