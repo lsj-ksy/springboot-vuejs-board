@@ -44,7 +44,7 @@ public class FileHandler {
         //Apache Commons 라이브러리 중 Null 체크를 해주는 CollectionUtils.isEmpty(객체) 를 사용하는 것이 좋다고 한다.
         if (!CollectionUtils.isEmpty(fileList)) { //fileList가 Null이 아니라면
 
-            // [!]만들어야하는 경로 :: 니컴퓨터/프로젝트폴더/upload/{folderName}/파일저장됨.jpg
+            // [!]만들어야하는 경로 :: 컴퓨터/프로젝트폴더/upload/{folderName}/파일저장됨.jpg
             String savePath = uploadPath + File.separator + folderName;
 
             if (!new File(savePath).exists()) { //업로드 폴더 또는 upload/{folder} 폴더가 없는 경우
@@ -57,9 +57,11 @@ public class FileHandler {
             }
 
             for (MultipartFile multipartFile : fileList) {
+
                 String fileOriginName = multipartFile.getOriginalFilename(); //ex) 사진.png
+                String extension = fileOriginName.split("\\.")[1];      //ex) .png
                 String fileName = new MD5Generator(fileOriginName).toString(); //ex) 0d93jdk21sk....
-                String filePath = savePath + File.separator + fileName; //ex) 니컴퓨터/프로젝트폴더/upload/{folderName}/사진.png
+                String filePath = savePath + File.separator + fileName + "." + extension; //ex) 니컴퓨터/프로젝트폴더/upload/{folderName}/사진.png
 
                 multipartFile.transferTo(new File(filePath)); //transferTo() -> 파일 저장
 
