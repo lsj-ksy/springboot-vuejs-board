@@ -51,7 +51,7 @@
         </div>
       </section>
       <div class="right-btn">
-        <router-link class="btn btn-outline-success mt-1 mb-10" :to="`/post_write/${categoryId}/${boardId}`">글쓰기</router-link>
+        <router-link class="btn btn-outline-primary mt-1 mb-10" :to="`/post_write/${categoryId}/${boardId}`">글쓰기</router-link>
       </div>
     </div>
     <div class="align-center">

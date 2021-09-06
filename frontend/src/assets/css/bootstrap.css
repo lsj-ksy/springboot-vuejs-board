@@ -4552,6 +4552,7 @@ textarea.form-control-lg {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 0.25rem;
+  margin-right: 5px;
 }
 .badge:empty {
   display: none;

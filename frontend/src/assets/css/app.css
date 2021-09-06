@@ -1409,8 +1409,9 @@
 }
 
 #main {
+  background-color: #F2F7FF;
   margin-left: 300px;
-  padding: 0 2rem 2rem 2rem;
+  padding: 2rem 2rem 2rem 2rem;
 }
 
 #title {
