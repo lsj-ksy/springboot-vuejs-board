@@ -55,7 +55,7 @@ public class UserService {
                 .profileImg(user.getProfileImg())
                 .nickname(user.getNickname())
                 .createdDate(user.getCreatedDate())
-                .socialType(user.getSocialType())
+                .socialType(String.valueOf(user.getSocialType()))
                 .postCount(postCount)
                 .replyCount(replyCount)
                 .scrapCount(scrapCount)
@@ -85,7 +85,10 @@ public class UserService {
             userRepository.flush(); //변동사항 적용
         });
 
+    }
 
+    public User getUser(String socialKey) {
+        return userRepository.findBySocialKey(socialKey);
     }
 
 }

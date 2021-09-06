@@ -8,7 +8,6 @@ import com.sjsy.springvue.domain.post.PostScrap;
 import com.sjsy.springvue.domain.board.Reply;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,8 +26,9 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    private String socialType;
+    private SocialType socialType;
 
     @NotNull
     private String socialKey;
@@ -41,7 +41,7 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private Role role;
+    private RoleType roleType;
 
     private String cellNumber;
 
@@ -72,12 +72,12 @@ public class User extends BaseTimeEntity {
     private List<PostScrap> postScrapList = new ArrayList<>();
 
     @Builder
-    public User(String socialType, String socialKey, String username, String nickname, Role role, String cellNumber, String email, Gender gender, String profileImg) {
+    public User(SocialType socialType, String socialKey, String username, String nickname, RoleType roleType, String cellNumber, String email, Gender gender, String profileImg) {
         this.socialType = socialType;
         this.socialKey = socialKey;
         this.username = username;
         this.nickname = nickname;
-        this.role = role;
+        this.roleType = roleType;
         this.cellNumber = cellNumber;
         this.email = email;
         this.gender = gender;

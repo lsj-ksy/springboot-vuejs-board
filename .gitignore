@@ -41,4 +41,4 @@ frontend/node_modules
 upload/
 
 config.yml
-application.properties
+*.properties

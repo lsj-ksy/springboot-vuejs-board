@@ -1,6 +1,5 @@
 package com.sjsy.springvue.web;
 
-import com.sjsy.springvue.config.auth.dto.SessionDto;
 import com.sjsy.springvue.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,9 +22,5 @@ public class HelloController {
         return new ResponseEntity<String>("hello", HttpStatus.OK);
     }
 
-    @GetMapping("/api/test/login/{id}")
-    public String testLogin(@PathVariable Long id) {
-        httpSession.setAttribute("user", new SessionDto(userService.testLogin(id)));
-        return "redirect:/";
-    }
+
 }

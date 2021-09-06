@@ -1,11 +1,14 @@
 package com.sjsy.springvue.web;
 
+import com.sjsy.springvue.common.ApiResponse;
+import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.service.post.PostService;
 import com.sjsy.springvue.service.user.UserService;
 import com.sjsy.springvue.web.dto.request.UserSidebarReqDto;
 import com.sjsy.springvue.web.dto.response.PostsListResDto;
 import com.sjsy.springvue.web.dto.response.UserSidebarResDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,12 +41,18 @@ public class UserApiController {
         userService.userNicknameUpdate(userSidebarReqDto);
     }
 
-
     //이 주소 고민 많이 필요함
     // /api/v1/user/posts/{user.id} 요런느낌?
     @GetMapping("/api/v1/postlist/{id}")
     public List<PostsListResDto> postlist(@PathVariable Long id) {
         return postService.find(id);
+    }
+
+    @GetMapping("/api/v1/users")
+    public ApiResponse getUser() {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getUser(principal.getUsername());
+        return ApiResponse.success("user", user);
     }
 
 }
