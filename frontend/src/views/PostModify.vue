@@ -22,22 +22,36 @@
           </div>
           <!-- 게시판 글쓰기 카테고리 & 게시판 선택 input end -->
 
+
           <!-- 글제목 -->
           <input type="text" class="form-control" id="basicInput" placeholder="제목" v-model="subject">
         </div>
       </div>
 
       <!-- 글내용 (ckEditor) -->
-      <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+      <div class="mb-3">
+        <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+      </div>
+      <div class="card">
+        <div class="card-header align-left">
+          <h4 class="upload-text">파일 첨부</h4>
+        </div>
+        <div class="card-body">
+          <!-- 파일 미리보기 버튼들어갈 div -->
+          <div class="badges">
+          </div>
+        </div>
+      </div>
+
 
       <!-- 파일 업로드 -->
-      <div class="mb-3 mt-1">
-        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="filesUploadUpdated(this.formData)">파일첨부</a>
+      <div class="file-upload mb-3 mt-1 align-left">
+        <a href="#" class="btn btn-lg btn-outline-primary" @click.self.prevent="filesUploadUpdated(this.formData)">새 파일</a>
       </div>
 
       <!-- 글쓰기 버튼 -->
       <div>
-        <a href="#" class="btn btn-outline-success mt-1 mb-10" @click.self.prevent="postUpdate( this.formData)">글쓰기</a>
+        <a href="#" class="btn btn-lg btn-outline-primary" @click.self.prevent="postUpdate( this.formData)">수정</a>
       </div>
     </div>
   </div>
@@ -65,7 +79,8 @@ export default {
       elem: '',
       formData: new FormData(),
       postDetail: '',
-      fileUpdated: false
+      fileUpdated: false,
+      targetId : 0
     };
   },
   methods: {
@@ -83,7 +98,8 @@ export default {
       this.subject = this.postDetail.subject; //기존 제목
       this.editorData = this.postDetail.content; // 기존 내용
     },
-    filesUploadUpdated(formData) { //파일첨부
+    filesUploadUpdated(formData) { //파일첨부+
+      var t = this
       let elem = document.createElement('input')
       // 이미지 파일 업로드 / 동시에 여러 파일 업로드
       elem.id = 'image'
@@ -91,9 +107,33 @@ export default {
       elem.accept = 'image/*'
       elem.multiple = true
 
-      elem.onchange = function () {
-        for (var index = 0; index < this.files.length; index++) {
+      elem.onchange = function (event) {
+        for (var index = 0; index < this.files.length; index++) { //업로드 파일 form에 전송
           formData.append('files', this.files[index])
+          console.log(this.files[index])
+        }
+        for (var image of this.files) {
+
+          var reader = new FileReader();
+          reader.onload = function (event) {
+            t.targetId += 1;
+            document.querySelector(".badges").innerHTML += `<button type="button" class="btn btn-outline-dark watch-file"
+                    data-bs-toggle="modal" data-bs-target="#fileImg${t.targetId}">${image.name}</button>
+                    <div class="modal-dark me-1 mb-1 d-inline-block"><div class="modal fade text-left" id="fileImg${t.targetId}" tabindex="-1" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header bg-dark white"><span class="modal-title" >미리보기</span>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                              </button></div>
+                           <div class="modal-body image_container">
+                              <img src="${event.target.result}">
+                          </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-dark ml-1" data-bs-dismiss="modal">
+                                <i class="bx bx-check d-block d-sm-none"></i><span class="d-none d-sm-block">닫기</span></button>
+                            </div></div></div></div></div>`
+          };
+          reader.readAsDataURL(image);
         }
       }
       elem.click();
@@ -110,9 +150,6 @@ export default {
       formData.append('ref', 0);
       formData.append('depth', 0);
 
-      console.log(this.$route.params.boardId)
-      console.log(this.subject)
-      console.log(this.editorData)
       axios.patch(`/api/v1/post/update/${this.$route.params.id}`, formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         this.$router.push(`/post_detail/${response.data}`); //글쓰기 성공시 상세보기 이동
       }).catch(error => {
@@ -153,6 +190,18 @@ export default {
 
 .form-select {
   margin-right: 1rem;
+}
+
+.file-upload {
+  float: left;
+}
+
+.upload-text {
+  text-align: left;
+}
+
+.badges {
+  text-align: left;
 }
 
 </style>

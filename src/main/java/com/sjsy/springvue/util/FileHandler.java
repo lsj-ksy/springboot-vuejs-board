@@ -21,7 +21,8 @@ public class FileHandler {
     private final String uploadPath;
 
     public FileHandler() {
-        this.uploadPath = System.getProperty("user.dir") + File.separator + "upload";
+        this.uploadPath = System.getProperty("user.dir") + File.separator + "frontend" + File.separator+ "src"
+                        + File.separator + "assets" + File.separator + "images" + File.separator + "upload";
     }
 
     //업로드 폴더 생성 여부 체크 함수
@@ -60,8 +61,8 @@ public class FileHandler {
 
                 String fileOriginName = multipartFile.getOriginalFilename(); //ex) 사진.png
                 String extension = fileOriginName.split("\\.")[1];      //ex) .png
-                String fileName = new MD5Generator(fileOriginName).toString(); //ex) 0d93jdk21sk....
-                String filePath = savePath + File.separator + fileName + "." + extension; //ex) 니컴퓨터/프로젝트폴더/upload/{folderName}/사진.png
+                String fileName = new MD5Generator(fileOriginName) + "." + extension; //ex) 0d93jdk21sk....
+                String filePath = savePath + File.separator + fileName; //ex) 니컴퓨터/프로젝트폴더/upload/{folderName}/사진.png
 
                 multipartFile.transferTo(new File(filePath)); //transferTo() -> 파일 저장
 

@@ -109,9 +109,14 @@ public class Post extends BaseTimeEntity {
     public void setContent(String content) {
         this.content = content;
     }
-
+    //카테고리 수정 setter
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    //삭제 setter
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     //enabled default 1

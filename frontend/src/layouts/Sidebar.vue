@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      <router-link  class="btn btn-lg btn-dark w-75" :to="`/post_write/0/0`"> 글쓰기 </router-link>
+      <router-link  class="btn btn-lg btn-dark w-75 mb-2" :to="`/post_write/0/0`"> 글쓰기 </router-link>
 
       <a href="#" class="btn btn-lg btn-dark w-75">회원가입</a>
       <div class="sidebar-menu">

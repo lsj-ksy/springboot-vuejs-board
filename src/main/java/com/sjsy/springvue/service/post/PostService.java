@@ -160,6 +160,23 @@ public class PostService {
         return id;
     }
 
+    //게시물 삭제
+    @Transactional(readOnly = true)
+    public void postDelete(Long postId, Long userId) {
+
+        Post updatePost = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + postId));
+
+        if(updatePost.getUser().getId() != userId) {
+            throw new IllegalArgumentException("No Match User id = [Request] " + userId + " & [Response] " + updatePost.getUser().getId().toString());
+        }
+
+        updatePost.setEnabled(0); //삭제
+
+        postRepository.save(updatePost);
+        postRepository.flush();
+    }
+
     //게시판 게시글 리스트 dto response service
     @Transactional(readOnly = true)
     public BoardResDto findAllByBoardId(Long boardId, int page, int perPage) {
