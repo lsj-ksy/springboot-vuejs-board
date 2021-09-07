@@ -67,7 +67,14 @@ public class PostApiController {
                        PostUpdateReqDto postUpdateReqDto) throws Exception {
 
         return postService.postUpdate(id,fileList,postUpdateReqDto);
+    }
 
+    //게시물 삭제
+    @PatchMapping("/api/v1/post/delete/{post_id}/{user_id}")
+    public void delete(@PathVariable("post_id") Long postId,
+                       @PathVariable("user_id") Long userId) {
+
+        postService.postDelete(postId, userId);
     }
 
 }

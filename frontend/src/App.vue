@@ -27,6 +27,7 @@ export default {
 
 <style>
 
+/* fonts */
 @font-face {
   font-family: 'GmarketSansBold';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
@@ -40,7 +41,6 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
-
 
 #app {
   font-family: GmarketSansMedium, GmarketSansBold, Avenir, Helvetica, Arial, sans-serif;

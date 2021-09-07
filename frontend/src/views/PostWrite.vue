@@ -109,8 +109,6 @@ export default {
           var reader = new FileReader();
           reader.onload = function (event) {
             t.targetId += 1;
-            var span = document.createElement("span");
-            span.setAttribute("class", "badge bg-primary")
             document.querySelector(".badges").innerHTML += `<button type="button" class="btn btn-outline-dark watch-file"
                     data-bs-toggle="modal" data-bs-target="#fileImg${t.targetId}">${image.name}</button>
                     <div class="modal-dark me-1 mb-1 d-inline-block"><div class="modal fade text-left" id="fileImg${t.targetId}" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -236,11 +234,6 @@ export default {
   -o-object-fit: cover;
   width: 100%;
   height: 100%;
-}
-
-/*ckeditor 기본길이*/
-.ck-editor__editable {
-  min-height: 500px;
 }
 
 .form-select {
