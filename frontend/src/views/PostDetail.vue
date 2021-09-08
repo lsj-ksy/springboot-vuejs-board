@@ -56,9 +56,6 @@
       <a href="#" class="btn btn-lg btn-outline-primary" @click.self.prevent="postDelete()">삭제</a>
     </div>
 
-    <!-- post replyWrite -->
-
-
     <!-- post replyList -->
     <div class="col-12">
       <div class="card">
@@ -67,9 +64,6 @@
             <table class="table table-hover table-lg">
               <thead>
               <tr>
-                <th>닉네임</th>
-                <th>댓글</th>
-                <th>작성일</th>
               </tr>
               </thead>
               <tbody>
@@ -82,11 +76,11 @@
                     <p class="font-bold ms-3 mb-0">{{ reply.user.nickname }}</p>
                   </div>
                 </td>
-                <td class="col-auto align-left">
-                  <p class=" mb-0">{{ reply.content }}</p>
+                <td class="col-auto">
+                  <p class="reply-content mb-0">{{ reply.content }}</p>
                 </td>
                 <td class="col-2">
-                  <p class=" mb-0">{{ moment(reply.modifiedDate).format('YYYY-MM-DD HH:mm') }}</p>
+                  <p class="mb-0">{{ moment(reply.modifiedDate).format('YYYY-MM-DD HH:mm') }}</p>
                 </td>
               </tr>
               </tbody>
@@ -95,7 +89,40 @@
         </div>
       </div>
     </div>
-    <h4> 댓글쓰기가 들어올공간 ㅎ </h4>
+
+    <!-- post replyWrite -->
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-lg">
+              <thead>
+              <tr>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="col-3" style="border-bottom-width: 0px;">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-md">
+                      <img src="https://i.stack.imgur.com/34AD2.jpg">
+                    </div>
+                    <p class="font-bold ms-3 mb-0">타락파워승준</p>
+                  </div>
+                </td>
+                <td class="col-auto" style="border-bottom-width: 0px;">
+                  <textarea class="form-control" placeholder="댓글을 써보세요!" id="floatingTextarea" v-on:keyup.enter="replyWrite()"></textarea>
+                </td>
+                <td class="col-2" style="border-bottom-width: 0px;">
+                  <a href="#" class="btn btn-primary" @click.self.prevent="replyWrite()">등록</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -186,9 +213,34 @@ export default {
           this.$swal.fire('삭제를 취소했습니다', '', 'info')
         }
       })
-
-
     },
+    replyWrite() { //댓글 쓰기
+
+      let replyContent = document.querySelector('#floatingTextarea').value;
+      let checkBlank = replyContent.trim()
+
+      if(checkBlank == '') {
+        this.$swal.fire({
+          icon: 'error',
+          title: '등록 실패!',
+          text: '내용을 입력해 주세요!',
+        })
+        document.getElementById('floatingTextarea').value = ''; //댓글창 비우기
+        return;
+      }
+
+      const formData = new FormData()
+      formData.append('userId', 2); //userId 하드코딩
+      formData.append('postId', this.postDetail.postId);  //postId
+      formData.append('content', replyContent);  //textarea에 입력한 내용
+
+      axios.post('/api/v1/reply/save', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+        this.getPostReplyList() //댓글 다시 불러오기
+        document.getElementById('floatingTextarea').value = ''; //댓글창 비우기
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   }
 }
 </script>
@@ -220,6 +272,9 @@ export default {
   height: 100%;
 }
 
+.reply-content {
+  text-align: left;
+}
 
 </style>
 
