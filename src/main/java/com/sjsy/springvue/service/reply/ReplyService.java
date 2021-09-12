@@ -48,7 +48,7 @@ public class ReplyService {
     //게시물 번호 > 댓글 리스트 가져오기
     @Transactional(readOnly = true)
     public List<ReplyListResDto> getReplyListByPostId(Long id) {
-        return postRepository.findById(id).get().getReplyList().stream()
+        return postRepository.findById(id).get().getReplyListByEnalbed().stream()
                 .map(ReplyListResDto::new)
                 .collect(Collectors.toList());
     }
