@@ -119,6 +119,21 @@ public class Post extends BaseTimeEntity {
         this.enabled = enabled;
     }
 
+    public List<Reply> getReplyListByEnalbed() {
+
+        List<Reply> replyListByEnalbed = new ArrayList<>();
+
+        this.replyList.forEach(
+                 reply -> {
+                    if (reply.getEnabled() != 0) {
+                        replyListByEnalbed.add(reply);
+                    }
+                }
+        );
+
+        return replyListByEnalbed;
+    }
+
     //enabled default 1
     @PrePersist
     public void defaultEnabled() { //글작성시 enabled default 값은 1

@@ -1,5 +1,6 @@
 <template>
   <div id="main">
+    <p>{{replyList}}</p>
     <header class="mb-3">
       <a href="#" class="burger-btn d-block d-xl-none">
         <i class="bi bi-justify fs-3"></i>
@@ -76,11 +77,19 @@
                     <p class="font-bold ms-3 mb-0">{{ reply.user.nickname }}</p>
                   </div>
                 </td>
-                <td class="col-auto">
+                <td :id="'reply-list-' + reply.id" class="col-auto">
                   <p class="reply-content mb-0">{{ reply.content }}</p>
                 </td>
                 <td class="col-2">
                   <p class="mb-0">{{ moment(reply.modifiedDate).format('YYYY-MM-DD HH:mm') }}</p>
+                </td>
+                <td class="col-1" :id="'reply-list-button-' + reply.id" >
+                  <!--
+                  <span @click.self.prevent="replyModifyEdit(reply.id)"><font-awesome-icon icon="edit"/></span>
+                  <span @click.self.prevent="replyDelete(reply.id)"><font-awesome-icon icon="trash-alt" /></span>
+                  -->
+                  <span class="clickable" @click.self.prevent="replyModifyEdit(reply.id)">수정 /</span>
+                  <span class="clickable" @click.self.prevent="replyDelete(reply.id)"> 삭제</span>
                 </td>
               </tr>
               </tbody>
@@ -111,10 +120,10 @@
                   </div>
                 </td>
                 <td class="col-auto" style="border-bottom-width: 0px;">
-                  <textarea class="form-control" placeholder="댓글을 써보세요!" id="floatingTextarea" v-on:keyup.enter="replyWrite()"></textarea>
+                  <textarea class="form-control" placeholder="댓글을 써보세요!" id="floatingTextarea" v-on:keyup.enter="replyWrite"></textarea>
                 </td>
                 <td class="col-2" style="border-bottom-width: 0px;">
-                  <a href="#" class="btn btn-primary" @click.self.prevent="replyWrite()">등록</a>
+                  <a href="#" class="btn btn-primary" @click.self.prevent="replyWrite">등록</a>
                 </td>
               </tr>
               </tbody>
@@ -214,7 +223,14 @@ export default {
         }
       })
     },
-    replyWrite() { //댓글 쓰기
+    replyWrite(e) { //댓글 쓰기
+
+      console.log(e);
+
+      if (e.ctrlKey) {
+        document.getElementById('floatingTextarea').value = e.path[0].value + "\n"
+        return console.log('New line', e)
+      }
 
       let replyContent = document.querySelector('#floatingTextarea').value;
       let checkBlank = replyContent.trim()
@@ -240,6 +256,76 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    replyDelete(replyId) { //댓글 삭제
+
+      this.$swal.fire({
+        title: '댓글을 삭제하시겠습니까?',
+        showDenyButton: true,
+        confirmButtonText: '네',
+        denyButtonText: `아니오`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal.fire('삭제되었습니다', '', 'success').then(() => {
+            axios.delete(`/api/v1/reply/delete/${replyId}`).then(response => {
+              this.getPostReplyList() //댓글 다시 불러오기
+              console.log(response)
+            }).catch(error => {
+              console.log(error)
+            })
+          })
+        }
+      })
+    },
+    replyModifyEdit(replyId) { //댓글 수정
+      console.log(document.getElementById('reply-list-' + replyId));
+
+      /*
+      textarea className="form-control" placeholder="댓글을 써보세요!" id="floatingTextarea"
+      v-on:keyup.enter="replyWrite"></textarea>
+      */
+
+      //원래 댓글내용
+
+      var v = this;
+
+      var originElement = document.getElementById('reply-list-' + replyId)
+
+      //댓글 입력창
+      var modifyTextarea = document.createElement('textarea');
+      modifyTextarea.className = 'form-control'
+      modifyTextarea.id = 'floatingTextarea'
+      modifyTextarea.innerHTML = originElement.firstChild.textContent;
+
+      //기존 댓글 내용 대신 댓글 입력창 삽입
+      originElement.firstChild.remove();
+      originElement.appendChild(modifyTextarea);
+
+      var button = document.getElementById('reply-list-button-' + replyId)
+
+      //기존 버튼 삭제
+      while ( button.hasChildNodes() ) { //자식노드 모두 삭제
+        button.removeChild(button.firstChild);
+      }
+
+      var modifyButton = document.createElement('a')
+      modifyButton.href = '#'
+      modifyButton.className = 'btn btn-primary'
+      modifyButton.innerHTML = '수정'
+
+      modifyButton.addEventListener('click', function (e){  //버튼클릭시 수정완료
+        v.replyModifySubmit(e, replyId);
+      })
+      modifyTextarea.addEventListener('keypress', function (e){   //엔터키 수정완료
+        v.replyModifySubmit(e, replyId);
+      })
+
+      button.appendChild(modifyButton)
+
+    },
+    replyModifySubmit(e, replyId) {
+      console.log('testListener! replyId : ' + replyId)
+      console.log(e)
     }
   }
 }
@@ -273,7 +359,12 @@ export default {
 }
 
 .reply-content {
+  white-space: pre-line;
   text-align: left;
+}
+
+.clickable {
+  cursor: pointer;
 }
 
 </style>
