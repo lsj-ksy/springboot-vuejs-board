@@ -21,6 +21,8 @@ public class PostDetailResDto {
     private String content; //글내용
     private LocalDateTime modifiedDate; //최종수정일
     private List<Long> postFileList = new ArrayList<>(); //파일리스트
+    private List<String> postFileNameList = new ArrayList<>(); //MD5 형식 파일 이름 리스트
+    private List<String>  postOrigNameList = new ArrayList<>(); //업로드할때 쓰였던 원본파일 이름 리스트
 
     @Builder
     public PostDetailResDto(Post entity) {
@@ -35,6 +37,8 @@ public class PostDetailResDto {
         this.modifiedDate = entity.getModifiedDate();
 
         entity.getPostFileList().forEach(postFile -> this.postFileList.add(postFile.getId()));
+        entity.getPostFileList().forEach(postFile -> this.postFileNameList.add(postFile.getFileName()));
+        entity.getPostFileList().forEach(postFile -> this.postOrigNameList.add(postFile.getFileOriginName()));
 
     }
 

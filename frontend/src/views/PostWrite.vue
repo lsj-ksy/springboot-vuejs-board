@@ -83,7 +83,7 @@ export default {
   methods: {
     //카테고리 선택시 게시판 목록 불러오는 함수
     setBoardByCategory() {
-      for (var i = 0; i < this.categories.length; i++) {
+      for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i].categoryId == this.selectedCategory) {
           this.boardByCategory = this.categories[i].boards;
           return;
@@ -91,7 +91,7 @@ export default {
       }
     },
     filesUpload(formData, editorData) { //파일첨부
-      var t = this
+      let t = this
       let elem = document.createElement('input')
       // 이미지 파일 업로드 / 동시에 여러 파일 업로드
       elem.id = 'image'
@@ -100,17 +100,15 @@ export default {
       elem.multiple = true
 
       elem.onchange = function (event) {
-        for (var index = 0; index < this.files.length; index++) { //업로드 파일 form에 전송
+        for (let index = 0; index < this.files.length; index++) { //업로드 파일 form에 전송
           formData.append('files', this.files[index])
           console.log(this.files[index])
         }
-        for (var image of this.files) {
+        for (let image of this.files) {
 
-          var reader = new FileReader();
+          let reader = new FileReader();
           reader.onload = function (event) {
             t.targetId += 1;
-            var span = document.createElement("span");
-            span.setAttribute("class", "badge bg-primary")
             document.querySelector(".badges").innerHTML += `<button type="button" class="btn btn-outline-dark watch-file"
                     data-bs-toggle="modal" data-bs-target="#fileImg${t.targetId}">${image.name}</button>
                     <div class="modal-dark me-1 mb-1 d-inline-block"><div class="modal fade text-left" id="fileImg${t.targetId}" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -236,11 +234,6 @@ export default {
   -o-object-fit: cover;
   width: 100%;
   height: 100%;
-}
-
-/*ckeditor 기본길이*/
-.ck-editor__editable {
-  min-height: 500px;
 }
 
 .form-select {
