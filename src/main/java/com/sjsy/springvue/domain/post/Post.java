@@ -68,7 +68,7 @@ public class Post extends BaseTimeEntity {
 
     @Builder
     public Post(Board board, User user, String subject, String content, int readcount, int likecount, int
-                ref, int depth) {
+            ref, int depth) {
         this.board = board;
         this.user = user;
         this.subject = subject;
@@ -109,9 +109,29 @@ public class Post extends BaseTimeEntity {
     public void setContent(String content) {
         this.content = content;
     }
-
+    //카테고리 수정 setter
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    //삭제 setter
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
+    public List<Reply> getReplyListByEnalbed() {
+
+        List<Reply> replyListByEnalbed = new ArrayList<>();
+
+        this.replyList.forEach(
+                reply -> {
+                    if (reply.getEnabled() != 0) {
+                        replyListByEnalbed.add(reply);
+                    }
+                }
+        );
+
+        return replyListByEnalbed;
     }
 
     //enabled default 1

@@ -87,7 +87,7 @@ export default {
       //Page 클릭시 호출할 수 있는 callback 함수. page를 watch 해서 사용하고있기 때문에 지금은 필요없음
     },
     korDay(numberOfDay) {
-      var day = '';
+      let day = '';
       switch (numberOfDay) {
         case 0:
           day = '일';
