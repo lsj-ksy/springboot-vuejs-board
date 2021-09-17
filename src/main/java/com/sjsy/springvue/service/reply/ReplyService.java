@@ -62,7 +62,9 @@ public class ReplyService {
         if(!String.valueOf(reply.getUser().getId()).equals(replyUpdateReqDto.getUserId())) {
             throw new IllegalArgumentException("No Match User id = [Request] " + replyUpdateReqDto.getUserId() + " & [Response] " + reply.getUser().getId().toString());
         }
+
         reply.update(replyUpdateReqDto.getContent());
+
         return id;
     }
 

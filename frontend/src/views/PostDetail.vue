@@ -290,8 +290,7 @@ export default {
         }
       })
     },
-    replyModifyEdit(replyId) { //댓글 수정
-      console.log(document.getElementById('reply-list-' + replyId));
+    replyModifyEdit(replyId) { //댓글 수정 클릭
 
       let v = this;
 
@@ -301,14 +300,14 @@ export default {
       //댓글 입력창 element 만들기
       let modifyTextarea = document.createElement('textarea');
       modifyTextarea.className = 'form-control'
-      modifyTextarea.id = 'floatingTextarea'
+      modifyTextarea.id = 'modifyTextArea' + replyId
       modifyTextarea.innerHTML = originElement.firstChild.textContent;
 
       //기존 댓글 내용 대신 댓글 입력창 삽입
       originElement.firstChild.remove();
       originElement.appendChild(modifyTextarea);
 
-      //기존 수정/삭제 버튼 있던 테이블 선택
+      //기존 수정/삭제 버튼 있던 테이블 element
       let button = document.getElementById('reply-list-button-' + replyId)
 
       //기존 버튼 삭제
@@ -326,15 +325,69 @@ export default {
         v.replyModifySubmit(e, replyId);
       })
       modifyTextarea.addEventListener('keypress', function (e) {   //엔터키 수정완료
-        v.replyModifySubmit(e, replyId);
+        if(e.key === 'Enter') { //일반 Enter는 수정버튼 클릭과 같음
+          v.replyModifySubmit(e, replyId);
+        } else if (e.key === '\n') {  // ctrl + enter 는 줄바꿈
+          document.getElementById('modifyTextArea' + replyId).value += '\n'
+        }
       })
 
       button.appendChild(modifyButton)
 
     },
-    replyModifySubmit(e, replyId) {
-      console.log('testListener! replyId : ' + replyId)
-      console.log(e)
+    replyModifySubmit(e, replyId) { //댓글 수정 확인
+
+      let v = this  //vue
+
+      const formData = new FormData()
+
+      let replyContent = document.getElementById('modifyTextArea' +replyId).value //새로운 댓글
+
+      formData.append('userId', 2); //userId 하드코딩
+      formData.append('content', replyContent );  //content
+
+      axios.patch(`/api/v1/reply/update/${replyId}`, formData ).then(response => {
+        console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
+
+      let modifyText = document.createElement('p');
+      modifyText.className = 'reply-content mb-0'
+      modifyText.innerHTML = replyContent;
+
+      document.getElementById('reply-list-' + replyId).firstChild.remove()
+      document.getElementById('reply-list-' + replyId).appendChild(modifyText)
+
+      //기존 수정/삭제 버튼 있던 테이블 element
+      let button = document.getElementById('reply-list-button-' + replyId)
+
+      //기존 버튼 삭제
+      while (button.hasChildNodes()) { //자식노드 모두 삭제
+        button.removeChild(button.firstChild);
+      }
+
+      let modifyButton = document.createElement('span');
+      modifyButton.className = 'clickable'
+      modifyButton.innerHTML = '수정 /';
+      modifyButton.addEventListener('click', function (e) {  //버튼클릭시 수정완료
+        e.preventDefault()
+        v.replyModifyEdit(replyId);
+      })
+
+      button.appendChild(modifyButton);
+
+      let deleteButton = document.createElement('span');
+      deleteButton.className = 'clickable'
+      deleteButton.innerHTML = ' 삭제'
+      deleteButton.addEventListener('click', function (e) {  //버튼클릭시 수정완료
+        e.preventDefault()
+        v.replyDelete(replyId);
+      })
+
+      button.appendChild(deleteButton);
+
+//      this.$router.go();
     }
   }
 }
