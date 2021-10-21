@@ -1,24 +1,25 @@
 <template>
   <header-title/>
   <sidebar v-on:categories="categories"/>
-  <router-view :categories="this.categories"/>
+  <router-view :categories="this.categoriesList"/>
   <bfooter/>
 </template>
 
 <script>
 import HeaderTitle from "@/layouts/HeaderTitle";
 import Sidebar from "@/layouts/Sidebar";
+import Bfooter from "@/layouts/BoardFooter";
 
 export default {
-  components: {HeaderTitle, Sidebar},
+  components: {HeaderTitle, Sidebar, Bfooter},
   data() {
     return {
-      categories: '123'
+      categoriesList: '123'
     };
   },
   methods: {
     categories(data) {
-      this.categories = data;
+      this.categoriesList = data;
     }
   }
 }

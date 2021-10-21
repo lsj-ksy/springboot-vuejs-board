@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "bootrun": "vue-cli-service build --mode bootrun",
+    "deploy": "vue-cli-service build --mode deploy"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^29.1.0",

@@ -9,11 +9,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
-
 const app = createApp(App)
 app.use(router)
 app.mixin(mixins)
 app.use(CKEditor)
 app.use(VueSweetalert2)
 app.mount('#app')
-

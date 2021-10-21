@@ -1,10 +1,15 @@
 module.exports = {
-    outputDir: '../src/main/resources/static',
+    outputDir: process.env.VUE_APP_OUTDIR,
+    publicPath: process.env.VUE_APP_PUBLICPATH,
     devServer: {
         proxy: {
             port: 3000,
             '/api': {
-                target: 'http://localhost:8080',
+                target: {
+                    host: 'localhost',
+                    protocol: 'http',
+                    port: process.env.VUE_APP_PORT
+                },
                 ws: true,
                 changeOrigin: true
             }

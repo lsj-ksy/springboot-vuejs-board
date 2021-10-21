@@ -29,7 +29,7 @@
             <img src="https://i.stack.imgur.com/34AD2.jpg" alt="profile">
           </div>
           <div class="ms-3 name">
-            <h5 class="font-bold">이승준</h5>
+            <h5 class="font-bold me-1">{{ postWriter.nickname }}</h5>
             <h6 class="text-muted mb-0">{{ moment(postDetail.modifiedDate).format('YYYY-MM-DD HH:mm') }}</h6>
           </div>
           <h4 class="card-title m-lg-4">{{ postDetail.subject }}</h4>
@@ -68,30 +68,30 @@
               </tr>
               </thead>
               <tbody id="reply-table">
-                <tr :key="i" v-for="(reply,i) in replyList">
-                  <td class="col-3">
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-md">
-                        <img src="https://i.stack.imgur.com/34AD2.jpg">
-                      </div>
-                      <p class="font-bold ms-3 mb-0">{{ reply.user.nickname }}</p>
+              <tr :key="i" v-for="(reply,i) in replyList">
+                <td class="col-3">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-md">
+                      <img src="https://i.stack.imgur.com/34AD2.jpg">
                     </div>
-                  </td>
-                  <td :id="'reply-list-' + reply.id" class="col-auto">
-                    <p class="reply-content mb-0">{{ reply.content }}</p>
-                  </td>
-                  <td class="col-2">
-                    <p class="mb-0">{{ moment(reply.modifiedDate).format('YYYY-MM-DD HH:mm') }}</p>
-                  </td>
-                  <td class="col-1" :id="'reply-list-button-' + reply.id">
-                    <!-- fontawesome 을 이용한다면..
-                    <span @click.self.prevent="replyModifyEdit(reply.id)"><font-awesome-icon icon="edit"/></span>
-                    <span @click.self.prevent="replyDelete(reply.id)"><font-awesome-icon icon="trash-alt" /></span>
-                    -->
-                    <span class="clickable" @click.self.prevent="replyModifyEdit(reply.id)">수정 /</span>
-                    <span class="clickable" @click.self.prevent="replyDelete(reply.id)"> 삭제</span>
-                  </td>
-                </tr>
+                    <p class="font-bold ms-3 mb-0">{{ reply.user.nickname }}</p>
+                  </div>
+                </td>
+                <td :id="'reply-list-' + reply.id" class="col-auto">
+                  <p class="reply-content mb-0">{{ reply.content }}</p>
+                </td>
+                <td class="col-2">
+                  <p class="mb-0">{{ moment(reply.modifiedDate).format('YYYY-MM-DD HH:mm') }}</p>
+                </td>
+                <td class="col-1" :id="'reply-list-button-' + reply.id">
+                  <!-- fontawesome 을 이용한다면..
+                  <span @click.self.prevent="replyModifyEdit(reply.id)"><font-awesome-icon icon="edit"/></span>
+                  <span @click.self.prevent="replyDelete(reply.id)"><font-awesome-icon icon="trash-alt" /></span>
+                  -->
+                  <span class="clickable" @click.self.prevent="replyModifyEdit(reply.id)">수정 /</span>
+                  <span class="clickable" @click.self.prevent="replyDelete(reply.id)"> 삭제</span>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -116,7 +116,7 @@
                     <div class="avatar avatar-md">
                       <img src="https://i.stack.imgur.com/34AD2.jpg">
                     </div>
-                    <p class="font-bold ms-3 mb-0">타락파워수연</p>
+                    <p class="font-bold ms-3 mb-0">GUEST_USER</p>
                   </div>
                 </td>
                 <td class="col-auto" style="border-bottom-width: 0px;">
@@ -147,6 +147,7 @@ export default {
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
       postDetail: '',
+      postWriter: '',
       editor: ClassicEditor,
       editorData: '',
       editorConfig: {
@@ -170,7 +171,8 @@ export default {
   }, //unmount가 완료된 후 실행
   methods: {
     async getPostDetail() {
-      this.postDetail = await this.$api(`http://localhost:8080/api/v1/post/${this.$route.params.id}`, 'get')
+      this.postDetail = await this.$api(`${process.env.BASE_URL}api/v1/post/${this.$route.params.id}`, 'get')
+      this.postWriter = this.postDetail.user
       this.editorData = this.postDetail.content
       let t = this //vue
 
@@ -205,7 +207,7 @@ export default {
       }
     },
     async getPostReplyList() { //댓글리스트 api data response
-      this.replyList = await this.$api(`http://localhost:8080/api/v1/post/${this.$route.params.id}/reply/list`, 'get')
+      this.replyList = await this.$api(`${process.env.BASE_URL}api/v1/post/${this.$route.params.id}/reply/list`, 'get')
     },
     moveToModify() { // 게시글 수정 이동
       this.$swal.fire({
@@ -230,7 +232,7 @@ export default {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) { // '네' 클릭시 게시글 삭제
           this.$swal.fire('삭제되었습니다', '', 'success').then(() => {
-            this.$api(`/api/v1/post/delete/${this.postDetail.postId}/2`, 'patch') //userid 하드코딩
+            this.$api(`${process.env.BASE_URL}api/v1/post/delete/${this.postDetail.postId}/1`, 'patch') //userid 하드코딩
             this.$router.push(`/list/${this.postDetail.categoryId}/${this.postDetail.boardId}`)
           })
         } else if (result.isDenied) { // '아니오' 클릭시 삭제 취소
@@ -259,11 +261,11 @@ export default {
       }
 
       const formData = new FormData()
-      formData.append('userId', 2); //userId 하드코딩
+      formData.append('userId', 1); //userId 하드코딩
       formData.append('postId', this.postDetail.postId);  //postId
       formData.append('content', replyContent);  //textarea에 입력한 내용
 
-      axios.post('/api/v1/reply/save', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+      axios.post(`${process.env.BASE_URL}api/v1/reply/save`, formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         this.getPostReplyList() //댓글 다시 불러오기
         document.getElementById('floatingTextarea').value = ''; //댓글창 비우기
       }).catch(error => {
@@ -280,7 +282,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.$swal.fire('삭제되었습니다', '', 'success').then(() => {
-            axios.delete(`/api/v1/reply/delete/${replyId}`).then(response => {
+            axios.delete(`${process.env.BASE_URL}api/v1/reply/delete/${replyId}`).then(response => {
               this.getPostReplyList() //댓글 다시 불러오기
               console.log(response)
             }).catch(error => {
@@ -343,10 +345,10 @@ export default {
 
       let replyContent = document.getElementById('modifyTextArea' +replyId).value //새로운 댓글
 
-      formData.append('userId', 2); //userId 하드코딩
+      formData.append('userId', 1); //userId 하드코딩
       formData.append('content', replyContent );  //content
 
-      axios.patch(`/api/v1/reply/update/${replyId}`, formData ).then(response => {
+      axios.patch(`${process.env.BASE_URL}api/v1/reply/update/${replyId}`, formData ).then(response => {
         console.log(response)
       }).catch(error => {
         console.log(error)

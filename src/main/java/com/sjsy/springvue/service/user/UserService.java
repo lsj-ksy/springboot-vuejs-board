@@ -1,24 +1,16 @@
 package com.sjsy.springvue.service.user;
 
-import com.sjsy.springvue.domain.main.Content;
-import com.sjsy.springvue.domain.main.ContentFile;
-import com.sjsy.springvue.domain.main.Title;
 import com.sjsy.springvue.domain.post.PostRepository;
 import com.sjsy.springvue.domain.post.PostScrapsRepository;
 import com.sjsy.springvue.domain.board.ReplyRepository;
 import com.sjsy.springvue.domain.user.User;
 import com.sjsy.springvue.domain.user.UserRepository;
-import com.sjsy.springvue.util.FileHandler;
-import com.sjsy.springvue.web.dto.request.MainSaveReqDto;
-import com.sjsy.springvue.web.dto.request.TitleFileSaveReqDto;
 import com.sjsy.springvue.web.dto.request.UserSidebarReqDto;
 import com.sjsy.springvue.web.dto.response.UserSidebarResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -30,15 +22,6 @@ public class UserService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
     private final PostScrapsRepository postScrapsRepository;
-    private final FileHandler fileHandler;
-
-    //테스트 로그인용 함수
-    @Transactional(readOnly = true)
-    public User testLogin(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("test login error"));
-    }
-
 
     //나의 활동 response service
     @Transactional(readOnly = true)

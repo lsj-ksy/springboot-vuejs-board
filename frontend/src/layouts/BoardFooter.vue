@@ -1,11 +1,11 @@
 <template>
   <footer>
-    <div class="footer clearfix mb-0 text-muted">
+    <div class="footer clearfix px-2 py-3 text-muted bg-dark">
       <div class="float-start">
-        <p>Test footer</p>
+        <p> </p>
       </div>
       <div class="float-end">
-        <p>Crafted by <a href="https://github.com/lsj-ksy/springboot-vue-board">LSJ & KSY</a></p>
+        <p class="text-white">Crafted by <a href="https://github.com/lsj-ksy/springboot-vuejs-board">LSJ & KSY</a></p>
       </div>
     </div>
   </footer>

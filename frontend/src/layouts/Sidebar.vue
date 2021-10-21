@@ -1,5 +1,6 @@
 <template>
   <!--  버튼위치 조정해야합니다!-->
+  <div>
   <header class="mb-3">
     <a href="#" class="burger-btn d-block d-xl-none">
       <i class="bi bi-justify fs-3"></i>
@@ -10,7 +11,7 @@
       <div class="sidebar-header">
         <div class="d-flex justify-content-between">
           <div class="logo">
-            <a href="/"><img src="../assets/images/logo/templogo.png" alt="Logo" srcset=""></a>
+            <a :href="`${mainUrl}`"><img src="../assets/images/logo/templogo.png" alt="Logo" srcset=""></a>
           </div>
           <div class="toggler">
             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -25,6 +26,7 @@
             </div>
             <div class="ms-3 name">
               <h5 class="font-bold">{{userInfo.nickname}}</h5>
+              <h6 class="text-muted mb-0">가입 날짜</h6>
               <h6 class="text-muted mb-0" >{{ moment(userInfo.createdDate).format('YYYY-MM-DD') }}</h6>
             </div>
           </div>
@@ -32,7 +34,6 @@
       </div>
       <router-link  class="btn btn-lg btn-dark w-75" :to="`/post_write/0/0`"> 글쓰기 </router-link>
 
-      <a href="#" class="btn btn-lg btn-dark w-75">회원가입</a>
       <div class="sidebar-menu">
         <ul class="menu">
 
@@ -59,6 +60,7 @@
       <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -67,6 +69,7 @@ import moment from 'moment' //Date formatting
 
 export default {
   name: "Sidebar", //컴포넌트 이름
+  emits: ["categories"],
   components: {}, //다른 컴포넌트 사용 시 import(배열로 등록)
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
@@ -74,7 +77,8 @@ export default {
       //test 하드코딩
       userid : 1, //testuser id
       userInfo : '',
-      sidebarBoards : ''
+      sidebarBoards : '',
+      mainUrl: ''
     };
   },
   updated() { //v-for 를 이용한 DOM 렌더링 이후에 main.js 적용
@@ -87,14 +91,15 @@ export default {
     var testUser01 = 1;
     this.getUserInfo(testUser01); //userInfo api data 호출
     this.getSidebarBoards();
+    this.mainUrl = process.env.BASE_URL;
     //main.js import for sidebar
   }, //template에 정의된 html 코드가 랜더링된 후 실행
   methods: {
     async getUserInfo(user) { //파라미터 혹은 data에서 userid 받아와야함. 현재는 테스트코드
-      this.userInfo = await this.$api(`http://localhost:8080/api/v1/user/myinfo/${user}`, 'get')
+      this.userInfo = await this.$api(`${process.env.BASE_URL}api/v1/user/myinfo/${user}`, 'get')
     },
     async getSidebarBoards() {
-      this.sidebarBoards = await this.$api('http://localhost:8080/api/v1/sidebar/board', 'get')
+      this.sidebarBoards = await this.$api(`${process.env.BASE_URL}api/v1/sidebar/board`, 'get')
     },
     sendCategories() {
       this.$emit('categories', this.sidebarBoards);
