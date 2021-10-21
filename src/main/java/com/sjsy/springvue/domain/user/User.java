@@ -1,8 +1,6 @@
 package com.sjsy.springvue.domain.user;
 
 import com.sjsy.springvue.domain.BaseTimeEntity;
-import com.sjsy.springvue.domain.abuse.BanUser;
-import com.sjsy.springvue.domain.abuse.StopUser;
 import com.sjsy.springvue.domain.post.Post;
 import com.sjsy.springvue.domain.post.PostScrap;
 import com.sjsy.springvue.domain.board.Reply;
@@ -61,12 +59,6 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Reply> replyList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<BanUser> banUserList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<StopUser> stopUserList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PostScrap> postScrapList = new ArrayList<>();

@@ -55,22 +55,19 @@
       </div>
     </div>
     <div class="align-center">
-      <pagination v-model="page" :records="this.totalPostsCount" :per-page="this.perPage" @paginate="myCallback"/>
+      <pagination v-model="page" :records="parseInt(this.totalPostsCount)" :per-page="this.perPage" @paginate="myCallback"/>
     </div>
-    <Bfooter/>
   </div>
 </template>
 
 <script>
 
-import Bfooter from '@/layouts/BoardFooter';
 import moment from 'moment' //Date formatting
 import Pagination from 'v-pagination-3'
 
 export default {
   name: 'List',
   components: {
-    Bfooter,
     Pagination
   }, //다른 컴포넌트 사용 시 import(배열로 등록)
   data() { //html과 js코드에서 사용할 데이터 변수 선언
@@ -114,8 +111,8 @@ export default {
       return day;
     },
     async getList(boardId) {
-      this.postList = await this.$api(`http://localhost:8080/api/v1/post/list?board_id=${boardId}&page=${this.page}&per_page=${this.perPage}`, "get");
-      this.totalPostsCount = await this.$api(`http://localhost:8080/api/v1/post/totalCount?board_id=${boardId}`, "get")
+      this.postList = await this.$api(`${process.env.BASE_URL}api/v1/post/list?board_id=${boardId}&page=${this.page}&per_page=${this.perPage}`, "get");
+      this.totalPostsCount = await this.$api(`${process.env.BASE_URL}api/v1/post/totalCount?board_id=${boardId}`, "get")
     }
   },
   computed: {

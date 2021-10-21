@@ -1,5 +1,5 @@
 import axios from 'axios';
-//axios.defaults.baseURL = 'https://nid.naver.com';
+//axios.defaults.baseURL = process.env.BASE_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 

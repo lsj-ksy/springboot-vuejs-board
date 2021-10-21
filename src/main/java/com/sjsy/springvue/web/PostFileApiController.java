@@ -7,16 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,6 +36,14 @@ public class PostFileApiController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDownloadDto.getFileOriginName() + "\"")
                 .body(resource);
+    }
+
+    @PostMapping("/api/v1/upload")
+    public ResponseEntity<List<String>> fileUpload(@RequestParam(value = "files") List<MultipartFile> fileList) {
+
+        List<String> result = new ArrayList<>();
+        result.add("uploadddddd");
+        return new ResponseEntity<List<String>>(result, HttpStatus.OK);
     }
 
 }

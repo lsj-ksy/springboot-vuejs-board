@@ -37,6 +37,9 @@
           <h4 class="upload-text">파일 첨부</h4>
         </div>
         <div class="card-body">
+          <div :key="i" v-for="(file,i) in existFileList">
+            <span class="badges bg-light">{{file}}</span>
+          </div>
           <!-- 파일 미리보기 버튼들어갈 div -->
           <div class="badges">
           </div>
@@ -72,6 +75,7 @@ export default {
       editorConfig: {
         // The configuration of the editor.
       },
+      existFileList: '',
       selectedCategory: this.$route.params.categoryId, //파라미터로 받아온 선택된 카테고리
       boardByCategory: '',
       ref: 0, //글쓰기 기본값
@@ -94,9 +98,10 @@ export default {
       }
     },
     async getPostDetail() { //글내용받아오기
-      this.postDetail = await this.$api(`http://localhost:8080/api/v1/post/${this.$route.params.id}`, 'get')
+      this.postDetail = await this.$api(`${process.env.BASE_URL}api/v1/post/${this.$route.params.id}`, 'get')
       this.subject = this.postDetail.subject; //기존 제목
       this.editorData = this.postDetail.content; // 기존 내용
+      this.existFileList = this.postDetail.postOrigNameList;
     },
     filesUploadUpdated(formData) { //파일첨부+
       let t = this
@@ -143,14 +148,14 @@ export default {
     },
     postUpdate(formData) {  //글쓰기
 
-      formData.append('userId', 2); //하드코딩
+      formData.append('userId', 1); //하드코딩
       formData.append('boardId', this.$route.params.boardId);
       formData.append('subject', this.subject);
       formData.append('content', this.editorData)
       formData.append('ref', 0);
       formData.append('depth', 0);
 
-      axios.patch(`/api/v1/post/update/${this.$route.params.id}`, formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+      axios.patch(`${process.env.BASE_URL}api/v1/post/update/${this.$route.params.id}`, formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         this.$router.push(`/post_detail/${response.data}`); //글쓰기 성공시 상세보기 이동
       }).catch(error => {
         alert('글쓰기 도중 오류가 발생했습니다. console을 확인해주세요')

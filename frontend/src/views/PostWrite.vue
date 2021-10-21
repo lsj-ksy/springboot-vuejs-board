@@ -144,14 +144,14 @@ export default {
         return;
       }
 
-      formData.append('userId', 2);
+      formData.append('userId', 1);
       formData.append('boardId', this.$route.params.boardId);
       formData.append('subject', this.subject);
       formData.append('content', this.editorData)
       formData.append('ref', 0);
       formData.append('depth', 0);
 
-      axios.post('/api/v1/post/write', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+      axios.post(`${process.env.BASE_URL}api/v1/post/write`, formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
         this.$router.push(`/post_detail/${response.data}`); //글쓰기 성공시 상세보기 이동
       }).catch(error => {
         alert('글쓰기 도중 오류가 발생했습니다. console을 확인해주세요')
