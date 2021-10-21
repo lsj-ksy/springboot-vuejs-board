@@ -64,22 +64,21 @@ task npmBuildBootRun(type: NpmTask) {
 }
 
 //npm run build --mode war
-task npmBuildWarFile(type: NpmTask) {
+task npmBuildDeployFile(type: NpmTask) {
     workingDir = file("${project.projectDir}/frontend")
     args = ['run', 'deploy']
 }
 
 // copy war-last 3
-task npmBuildDeploy(type: Copy, dependsOn: ['npmBuildWarFile']) {
+task npmBuildDeploy(type: Copy, dependsOn: ['npmBuildDeployFile']) {
     from("${project.projectDir}/src/main/resources/static/springboot-vuejs-board")
     into("${project.projectDir}/src/main/resources/static")
 }
 
 defaultTasks('clean')
-processResources.dependsOn('frontNpmInstall', 'npmBuildBootRun')
+processResources.dependsOn('frontNpmInstall', 'npmBuildBootRun', 'npmBuildDeploy')
 
 war {
-    processResources.dependsOn('npmBuildDeploy')
     archiveName("springboot-vuejs-board.war")
 }
 
@@ -87,8 +86,11 @@ gradle.taskGraph.whenReady { taskGraph ->
     def tasks = taskGraph.allTasks
 
     //태스크 실행 그래프에 War 또는 Deploy 글자가 들어간 task 가 있으면
-    if (tasks.find {it.name.contains("War") || it.name.contains("Deploy")}) {
-        npmBuildBootRun.enabled = false // npmBuildBootRun 태스크 skip
+    if (tasks.find { it.name.contains("war") }) {
+        npmBuildBootRun.enabled = false
+    } else {
+        npmBuildDeployFile.enabled = false
+        npmBuildDeploy.enabled = false
     }
 }
 
