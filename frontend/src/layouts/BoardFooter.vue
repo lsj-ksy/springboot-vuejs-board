@@ -1,11 +1,11 @@
 <template>
   <footer>
-    <div class="footer clearfix px-2 py-3 text-muted bg-dark">
+    <div class="footer w-100 px-3 py-4 text-muted bg-dark fixed-bottom">
       <div class="float-start">
         <p> </p>
       </div>
       <div class="float-end">
-        <p class="text-white">Crafted by <a href="https://github.com/lsj-ksy/springboot-vuejs-board">LSJ & KSY</a></p>
+        <p class="text-white mt-3">Crafted by <a href="https://github.com/lsj-ksy/springboot-vuejs-board">LSJ & KSY</a></p>
       </div>
     </div>
   </footer>
@@ -37,5 +37,6 @@ export default {
 @import '../assets/vendors/perfect-scrollbar/perfect-scrollbar.css';
 @import '../assets/vendors/bootstrap-icons/bootstrap-icons.css';
 @import '../assets/css/app.css';
+
 </style>
 

@@ -1,10 +1,5 @@
 <template>
   <div id="main">
-    <header class="mb-3">
-      <a href="#" class="burger-btn d-block d-xl-none">
-        <i class="bi bi-justify fs-3"></i>
-      </a>
-    </header>
     <div class="page-heading">
       <div class="page-title">
         <div class="row">
@@ -28,7 +23,7 @@
           <div class="avatar avatar-xl">
             <img src="https://i.stack.imgur.com/34AD2.jpg" alt="profile">
           </div>
-          <div class="ms-3 name">
+          <div class="ms-3 pe-3 name">
             <h5 class="font-bold me-1">{{ postWriter.nickname }}</h5>
             <h6 class="text-muted mb-0">{{ moment(postDetail.modifiedDate).format('YYYY-MM-DD HH:mm') }}</h6>
           </div>
@@ -157,6 +152,7 @@ export default {
       moment: moment, //날짜 포맷 moment.js
       image: '',
       replyList: '',
+      fileList: '',
       fileExist : false //파일 존재여부
     };
   },
@@ -174,31 +170,41 @@ export default {
       this.postDetail = await this.$api(`${process.env.BASE_URL}api/v1/post/${this.$route.params.id}`, 'get')
       this.postWriter = this.postDetail.user
       this.editorData = this.postDetail.content
-      let t = this //vue
+      this.fileList = this.postDetail.postFileList
 
+      let t = this //vue
 
       for (let index = 0; index < this.postDetail.postFileNameList.length; index++) {
         t.fileExist = true
+        let img_src;
         //data의 image를 Promise default밸류로 지정 (해당 이미지를 import해옴으로서 vue서버에서 만들어진 이미지 주소가 들어감)
-        await Promise.resolve(import("@/assets/images/upload/postfile/" + this.postDetail.postFileNameList[index])).then(function (value) {
-          t.image = value.default
+        await Promise.resolve(this.$api(`${process.env.BASE_URL}api/v1/check_file/${this.postDetail.postFileList[index]}`, 'get')).then(function (value) {
+          //t.image = value.default
+          if (typeof(value) !== "boolean") {
+            console.log(" ------- true ------- ");
+            img_src = `${process.env.VUE_APP_FULL_URL}api/v1/download/${value}`;
+          } else {
+            img_src = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Blank-document-broken.svg/480px-Blank-document-broken.svg.png";
+          }
         }).catch(error => {
+          //img_src = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Blank-document-broken.svg/480px-Blank-document-broken.svg.png";
           console.log('해당 에러는 서버, chunk에 파일이 없어서 생기는 에러입니다..')
           console.log(error)
         })
         //기존 modal 초기화
-        document.querySelector(".badges").innerHTML = '';
+        //document.querySelector(".badges").innerHTML = '';
         //modal 삽입
-        document.querySelector(".badges").innerHTML += `<button type="button" class="btn btn-outline-dark watch-file"
-                    data-bs-toggle="modal" data-bs-target="#fileImg${index}">${this.postDetail.postOrigNameList[index]}</button>
-                    <div class="modal-dark me-1 mb-1 d-inline-block"><div class="modal fade text-left" id="fileImg${index}" tabindex="-1" style="display: none;" aria-hidden="true">
+        document.querySelector(".badges").innerHTML += `<div class="card watch-file" style="width: 18rem;"><img src="${img_src}" class="card-img-top file-thumbnail" alt="...">
+                    <div class="card-body" id="file-body"><p class="card-text file-name-tag">${this.postDetail.postOrigNameList[index]}</p><button type="button" class="btn btn-outline-dark"
+                    data-bs-toggle="modal" data-bs-target="#fileImg${index}">자세히 보기</button></div></div>
+                    <div class="modal fade text-left" id="fileImg${index}" tabindex="-1" style="display: none;" aria-hidden="true"><div class="modal-dark me-1 mb-1">
                         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                           <div class="modal-content">
                             <div class="modal-header bg-dark white"><span class="modal-title" >미리보기</span>
                               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                               </button></div>
                            <div class="modal-body image_container">
-                               <img src=${t.image}>
+                               <img src="${img_src}">
                           </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-dark ml-1" data-bs-dismiss="modal">
@@ -223,23 +229,47 @@ export default {
       })
     },
     postDelete() {  //글삭제 (enabled 를 0 으로 변경)
+      const currentPath = location.pathname;
+      const formData = new FormData();
+      formData.append('current_path', currentPath);
+
       this.$swal.fire({
         title: '게시글을 삭제하시겠습니까?',
         showDenyButton: true,
         confirmButtonText: '네',
         denyButtonText: `아니오`,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          return axios.patch(`${process.env.BASE_URL}api/v1/post/delete/${this.postDetail.postId}/1`,
+              formData, {
+            headers: {'Content-Type': 'multipart/form-data'}
+          }).then(response => {
+            console.log(response)
+            if (response.status !== 200) {
+              throw new Error("Response Bad_Request")
+            }
+            return response
+          })
+              .catch(error => {
+                this.$swal.fire(`${error}`, ' 다른 아이디에서 작성된 글 이거나,\n정상적이지 않은 접근입니다. \n확인 후 다시 시도해 주세요.', 'warning')
+                return;
+              })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) { // '네' 클릭시 게시글 삭제
-          this.$swal.fire('삭제되었습니다', '', 'success').then(() => {
-            this.$api(`${process.env.BASE_URL}api/v1/post/delete/${this.postDetail.postId}/1`, 'patch') //userid 하드코딩
+
+          this.$swal.fire(`Success`, '삭제되었습니다', 'success').then(() => {
             this.$router.push(`/list/${this.postDetail.categoryId}/${this.postDetail.boardId}`)
           })
+
         } else if (result.isDenied) { // '아니오' 클릭시 삭제 취소
           this.$swal.fire('삭제를 취소했습니다', '', 'info')
         }
       })
     },
+
     replyWrite(e) { //댓글 쓰기
 
       if (e.ctrlKey) {  // ctrl + enter 라면 enter 이벤트 대신 줄 바꾸기 입력됨
@@ -402,16 +432,13 @@ export default {
   padding: 1.5rem 3rem 1.5rem 3rem !important;
 }
 
-.file-upload {
-  float: left;
-}
-
-.upload-text {
+.reply-content {
+  white-space: pre-line;
   text-align: left;
 }
 
-.badges {
-  text-align: left;
+.clickable {
+  cursor: pointer;
 }
 
 .image_container {
@@ -420,15 +447,40 @@ export default {
   -o-object-fit: cover;
   width: 100%;
   height: 100%;
+  max-height: 70vh;
 }
 
-.reply-content {
-  white-space: pre-line;
-  text-align: left;
+.image_container > img {
+  max-width: inherit;
+  max-height: inherit;
+  object-fit: contain;
 }
 
-.clickable {
-  cursor: pointer;
+.file-thumbnail {
+  min-width: inherit;
+  max-width: inherit;
+  min-height: 11.25rem;
+  max-height: 11.25rem;
+  object-fit: contain;
+  background-color: whitesmoke;
+}
+
+.file-name-tag {
+  font-size: 0.8rem;
+}
+
+.watch-file {
+  display: inline-block;
+  margin: 1rem;
+}
+
+.watch-file > #file-body {
+  padding: 1rem;
+  border-top-style: solid;
+  border-top-color: whitesmoke;
+  border-top-width: 0.1rem;
+  min-height: 7.85rem;
+  max-height: 7.85rem;
 }
 
 </style>

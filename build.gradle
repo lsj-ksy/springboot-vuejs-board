@@ -85,7 +85,7 @@ war {
 gradle.taskGraph.whenReady { taskGraph ->
     def tasks = taskGraph.allTasks
 
-    //태스크 실행 그래프에 War 또는 Deploy 글자가 들어간 task 가 있으면
+    //태스크 실행 그래프에 war task 가 있으면
     if (tasks.find { it.name.contains("war") }) {
         npmBuildBootRun.enabled = false
     } else {

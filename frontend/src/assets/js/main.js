@@ -27,6 +27,7 @@ let sidebarItems = document.querySelectorAll('.sidebar-item.has-sub');
 for (var i = 0; i < sidebarItems.length; i++) {
     let sidebarItem = sidebarItems[i];
     sidebarItems[i].querySelector('.sidebar-link').addEventListener('click', function (e) {
+        console.log("Click sidebar : " + i);
         e.preventDefault();
 
         let submenu = sidebarItem.querySelector('.submenu');

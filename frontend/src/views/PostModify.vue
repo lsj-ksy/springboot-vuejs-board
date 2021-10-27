@@ -37,9 +37,6 @@
           <h4 class="upload-text">파일 첨부</h4>
         </div>
         <div class="card-body">
-          <div :key="i" v-for="(file,i) in existFileList">
-            <span class="badges bg-light">{{file}}</span>
-          </div>
           <!-- 파일 미리보기 버튼들어갈 div -->
           <div class="badges">
           </div>
@@ -75,7 +72,6 @@ export default {
       editorConfig: {
         // The configuration of the editor.
       },
-      existFileList: '',
       selectedCategory: this.$route.params.categoryId, //파라미터로 받아온 선택된 카테고리
       boardByCategory: '',
       ref: 0, //글쓰기 기본값
@@ -84,7 +80,9 @@ export default {
       formData: new FormData(),
       postDetail: '',
       fileUpdated: false,
-      targetId : 0
+      targetId : 0,
+      fileList: '',
+      fileExist : false //파일 존재여부
     };
   },
   methods: {
@@ -101,7 +99,48 @@ export default {
       this.postDetail = await this.$api(`${process.env.BASE_URL}api/v1/post/${this.$route.params.id}`, 'get')
       this.subject = this.postDetail.subject; //기존 제목
       this.editorData = this.postDetail.content; // 기존 내용
-      this.existFileList = this.postDetail.postOrigNameList;
+      this.fileList = this.postDetail.postFileList
+
+      let t = this //vue
+
+      for (let index = 0; index < this.postDetail.postFileNameList.length; index++) {
+        t.fileExist = true
+        let img_src;
+        //data의 image를 Promise default밸류로 지정 (해당 이미지를 import해옴으로서 vue서버에서 만들어진 이미지 주소가 들어감)
+        await Promise.resolve(this.$api(`${process.env.BASE_URL}api/v1/check_file/${this.postDetail.postFileList[index]}`, 'get')).then(function (value) {
+          //t.image = value.default
+          if (typeof(value) !== "boolean") {
+            console.log(" ------- true ------- ");
+            img_src = `${process.env.VUE_APP_FULL_URL}api/v1/download/${value}`;
+          } else {
+            img_src = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Blank-document-broken.svg/480px-Blank-document-broken.svg.png";
+          }
+        }).catch(error => {
+          //img_src = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Blank-document-broken.svg/480px-Blank-document-broken.svg.png";
+          console.log('해당 에러는 서버, chunk에 파일이 없어서 생기는 에러입니다..')
+          console.log(error)
+        })
+        //기존 modal 초기화
+        //document.querySelector(".badges").innerHTML = '';
+        //modal 삽입
+        document.querySelector(".badges").innerHTML += `<div class="card watch-file" style="width: 18rem;"><img src="${img_src}" class="card-img-top file-thumbnail" alt="...">
+                    <div class="card-body" id="file-body"><p class="card-text file-name-tag">${this.postDetail.postOrigNameList[index]}</p><button type="button" class="btn btn-outline-dark"
+                    data-bs-toggle="modal" data-bs-target="#fileImg${index}">자세히 보기</button></div></div>
+                    <div class="modal fade text-left" id="fileImg${index}" tabindex="-1" style="display: none;" aria-hidden="true"><div class="modal-dark me-1 mb-1">
+                        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header bg-dark white"><span class="modal-title" >미리보기</span>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
+                              </button></div>
+                           <div class="modal-body image_container">
+                               <img src="${img_src}">
+                          </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-dark ml-1" data-bs-dismiss="modal">
+                                <i class="bx bx-check d-block d-sm-none"></i><span class="d-none d-sm-block">닫기</span></button>
+                            </div></div></div></div></div>`
+      }
+
     },
     filesUploadUpdated(formData) { //파일첨부+
       let t = this
@@ -122,16 +161,17 @@ export default {
           let reader = new FileReader();
           reader.onload = function (event) {
             t.targetId += 1;
-            document.querySelector(".badges").innerHTML += `<button type="button" class="btn btn-outline-dark watch-file"
-                    data-bs-toggle="modal" data-bs-target="#fileImg${t.targetId}">${image.name}</button>
-                    <div class="modal-dark me-1 mb-1 d-inline-block"><div class="modal fade text-left" id="fileImg${t.targetId}" tabindex="-1" style="display: none;" aria-hidden="true">
+            document.querySelector(".badges").innerHTML += `<div class="card watch-file" style="width: 18rem;"><img src="${event.target.result}" class="card-img-top file-thumbnail" alt="...">
+                    <div class="card-body" id="file-body"><p class="card-text file-name-tag">${image.name}</p><button type="button" class="btn btn-outline-dark"
+                    data-bs-toggle="modal" data-bs-target="#fileImg${t.targetId}">자세히 보기</button></div></div>
+                    <div class="modal fade text-left" id="fileImg${t.targetId}" tabindex="-1" style="display: none;" aria-hidden="true"><div class="modal-dark me-1 mb-1">
                         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                           <div class="modal-content">
                             <div class="modal-header bg-dark white"><span class="modal-title" >미리보기</span>
                               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                               </button></div>
                            <div class="modal-body image_container">
-                              <img src="${event.target.result}">
+                               <img src="${event.target.result}">
                           </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-dark ml-1" data-bs-dismiss="modal">
@@ -179,6 +219,12 @@ export default {
 }
 </script>
 <style>
+
+/*ckeditor 기본길이*/
+.ck-editor__editable {
+  min-height: 500px;
+}
+
 .input-group {
   position: relative;
   display: flex;
@@ -188,25 +234,50 @@ export default {
   width: auto;
 }
 
-/*ckeditor 기본길이*/
-.ck-editor__editable {
-  min-height: 500px;
-}
-
 .form-select {
   margin-right: 1rem;
 }
 
-.file-upload {
-  float: left;
+.image_container {
+  overflow: hidden;
+  display: contents;
+  -o-object-fit: cover;
+  width: 100%;
+  height: 100%;
+  max-height: 70vh;
 }
 
-.upload-text {
-  text-align: left;
+.image_container > img {
+  max-width: inherit;
+  max-height: inherit;
+  object-fit: contain;
 }
 
-.badges {
-  text-align: left;
+.file-thumbnail {
+  min-width: inherit;
+  max-width: inherit;
+  min-height: 11.25rem;
+  max-height: 11.25rem;
+  object-fit: contain;
+  background-color: whitesmoke;
+}
+
+.file-name-tag {
+  font-size: 0.8rem;
+}
+
+.watch-file {
+  display: inline-block;
+  margin: 1rem;
+}
+
+.watch-file > #file-body {
+  padding: 1rem;
+  border-top-style: solid;
+  border-top-color: whitesmoke;
+  border-top-width: 0.1rem;
+  min-height: 7.85rem;
+  max-height: 7.85rem;
 }
 
 </style>

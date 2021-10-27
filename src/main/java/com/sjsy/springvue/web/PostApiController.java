@@ -71,10 +71,21 @@ public class PostApiController {
 
     //게시물 삭제
     @PatchMapping("/api/v1/post/delete/{post_id}/{user_id}")
-    public void delete(@PathVariable("post_id") Long postId,
-                       @PathVariable("user_id") Long userId) {
+    public ResponseEntity<String> delete(@PathVariable("post_id") Long postId,
+                                        @PathVariable("user_id") Long userId,
+                                         @RequestParam(value = "current_path") String currentPath) {
 
-        postService.postDelete(postId, userId);
+        Long userCurrentView = Long.valueOf(currentPath.substring(currentPath.lastIndexOf("/") + 1));
+        if (!postId.equals(userCurrentView)) {
+            return new ResponseEntity<String>("Exception", HttpStatus.BAD_REQUEST);
+        }
+
+        int postEnabled = postService.postDelete(postId, userId);
+        if (postEnabled != 1) {
+            return new ResponseEntity<String>("Success", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Fail", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

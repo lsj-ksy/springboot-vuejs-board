@@ -109,16 +109,17 @@ export default {
           let reader = new FileReader();
           reader.onload = function (event) {
             t.targetId += 1;
-            document.querySelector(".badges").innerHTML += `<button type="button" class="btn btn-outline-dark watch-file"
-                    data-bs-toggle="modal" data-bs-target="#fileImg${t.targetId}">${image.name}</button>
-                    <div class="modal-dark me-1 mb-1 d-inline-block"><div class="modal fade text-left" id="fileImg${t.targetId}" tabindex="-1" style="display: none;" aria-hidden="true">
+            document.querySelector(".badges").innerHTML += `<div class="card watch-file" style="width: 18rem;"><img src="${event.target.result}" class="card-img-top file-thumbnail" alt="...">
+                    <div class="card-body" id="file-body"><p class="card-text file-name-tag">${image.name}</p><button type="button" class="btn btn-outline-dark"
+                    data-bs-toggle="modal" data-bs-target="#fileImg${t.targetId}">자세히 보기</button></div></div>
+                    <div class="modal fade text-left" id="fileImg${t.targetId}" tabindex="-1" style="display: none;" aria-hidden="true"><div class="modal-dark me-1 mb-1">
                         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                           <div class="modal-content">
                             <div class="modal-header bg-dark white"><span class="modal-title" >미리보기</span>
                               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><i data-feather="x"></i>
                               </button></div>
                            <div class="modal-body image_container">
-                              <img src="${event.target.result}">
+                               <img src="${event.target.result}">
                           </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-dark ml-1" data-bs-dismiss="modal">
@@ -131,6 +132,9 @@ export default {
       elem.click()
       this.editorData = editorData
       this.elem = elem
+    },
+    callFileUpload() {
+
     },
     postWrite(formData) {  //글쓰기
 
@@ -168,7 +172,7 @@ export default {
       this.setBoardByCategory();  //선택된 카테고리 변경시 게시판 목록도 변경됨
       this.$route.params.boardId = 0; //선택된 카테고리 변경시 선택된 boardId 도 0으로 바꿔줌 (--게시판--이 선택됨)
     }
-  },
+  }
 }
 </script>
 <style>
@@ -190,43 +194,9 @@ export default {
   width: auto;
 }
 
-.file-upload {
-  float: left;
+.form-select {
+  margin-right: 1rem;
 }
-
-.upload-text {
-  text-align: left;
-}
-
-.badges {
-  text-align: left;
-}
-
-.card-header {
-  padding: 1.5rem 1.5rem;
-  margin-bottom: 0;
-  background-color: white;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-}
-
-.watch-file {
-  margin-right: 5px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 0.35em 0.65em;
-  font-size: 0.85em;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.25rem;
-  margin-right: 5px;
-}
-
 
 .image_container {
   overflow: hidden;
@@ -234,11 +204,40 @@ export default {
   -o-object-fit: cover;
   width: 100%;
   height: 100%;
+  max-height: 70vh;
 }
 
-.form-select {
-  margin-right: 1rem;
+.image_container > img {
+  max-width: inherit;
+  max-height: inherit;
+  object-fit: contain;
 }
 
+.file-thumbnail {
+  min-width: inherit;
+  max-width: inherit;
+  min-height: 11.25rem;
+  max-height: 11.25rem;
+  object-fit: contain;
+  background-color: whitesmoke;
+}
+
+.file-name-tag {
+  font-size: 0.8rem;
+}
+
+.watch-file {
+  display: inline-block;
+  margin: 1rem;
+}
+
+.watch-file > #file-body {
+  padding: 1rem;
+  border-top-style: solid;
+  border-top-color: whitesmoke;
+  border-top-width: 0.1rem;
+  min-height: 7.85rem;
+  max-height: 7.85rem;
+}
 
 </style>

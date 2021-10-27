@@ -12,7 +12,15 @@ public class HelloController {
 
     @GetMapping("/api/hello")
     public ResponseEntity<String> hello() {
-        return new ResponseEntity<String>("hello", HttpStatus.OK);
+        String userDirPath = System.getProperty("user.dir");
+        String test = userDirPath.substring(0, userDirPath.lastIndexOf("/") + 1);
+
+        String checkPath = System.getProperty("user.dir").substring(0, System.getProperty("user.dir").lastIndexOf("/") + 1);
+
+        System.out.println("this.getClass().getPackage().getName() == "+this.getClass().getPackage().getName());
+        System.out.println("this.getClass().getProtectionDomain() == "+this.getClass().getProtectionDomain());
+
+        return new ResponseEntity<String>("hello" + System.getProperty("os.name") + " - " + System.getProperty("user.dir") + " - " + test + " - " + checkPath, HttpStatus.OK);
     }
 
 }
