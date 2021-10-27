@@ -94,7 +94,9 @@ java -jar SpringVue-0.0.1-SNAPSHOT.jar
 ```
 <br><br/>
 ## 📸 Site Screenshot
-
+![main](http://team1.space/upload/springboot-vuejs-board/screenshot/01-main.png)
+![post-write](http://team1.space/upload/springboot-vuejs-board/screenshot/02-post_write.png)
+![post-detail](http://team1.space/upload/springboot-vuejs-board/screenshot/03-post_detail.png)
 
 ## 🧑🏻‍💻 Team Member
 - 김수연 : https://github.com/hi-sooyeon
