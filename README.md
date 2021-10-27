@@ -16,6 +16,7 @@ Springboot-Vue.js-Board
 >  - [🛠 Stack](#-stack)
 >  - [💿 Installation](#-installation)
 >  - [📸 Site Screenshot](#-site-screenshot)
+>  - [🧑🏻‍💻 Team Member](#-team-member)
 #
 * * *
 #
@@ -93,3 +94,10 @@ java -jar SpringVue-0.0.1-SNAPSHOT.jar
 ```
 <br><br/>
 ## 📸 Site Screenshot
+
+
+## 🧑🏻‍💻 Team Member
+- 김수연 : https://github.com/hi-sooyeon
+- 이승준 : https://github.com/Zagg2732
+
+<br><br/>
