@@ -63,4 +63,31 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+#main {
+  padding-block: 6%;
+  margin-bottom: 104px;
+}
+
+.upload-text {
+  text-align: left;
+  margin: 2%
+}
+
+.file-upload {
+  float: left;
+}
+
+.badges {
+  text-align: left;
+  flex-flow: row wrap;
+  /* 아래의 두 개 합쳐서 쓴 것 */
+  /*
+      flex-direction: row  +  flex-wrap: wrap
+  */
+  justify-content: flex-start;
+}
+
+
+
 </style>

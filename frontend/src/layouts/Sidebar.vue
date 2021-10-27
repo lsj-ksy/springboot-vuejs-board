@@ -6,7 +6,7 @@
       <i class="bi bi-justify fs-3"></i>
     </a>
   </header>
-  <div id="sidebar" class="active">
+  <div id="sidebar" class="active mx-3">
     <div class="sidebar-wrapper active">
       <div class="sidebar-header">
         <div class="d-flex justify-content-between">
@@ -18,8 +18,8 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body py-4 px-5">
+      <div class="card" id="myinfo-area">
+        <div class="card-body p-4">
           <div class="d-flex align-items-center">
             <div class="avatar avatar-xl">
               <img src="https://i.stack.imgur.com/34AD2.jpg" alt="profilepicture">
@@ -32,7 +32,7 @@
           </div>
         </div>
       </div>
-      <router-link  class="btn btn-lg btn-dark w-75" :to="`/post_write/0/0`"> 글쓰기 </router-link>
+      <router-link id="btn-write" class="btn btn-lg btn-dark w-75" :to="`/post_write/0/0`"> 글쓰기 </router-link>
 
       <div class="sidebar-menu">
         <ul class="menu">
@@ -78,7 +78,7 @@ export default {
       userid : 1, //testuser id
       userInfo : '',
       sidebarBoards : '',
-      mainUrl: ''
+      mainUrl: process.env.BASE_URL
     };
   },
   updated() { //v-for 를 이용한 DOM 렌더링 이후에 main.js 적용
@@ -91,7 +91,6 @@ export default {
     var testUser01 = 1;
     this.getUserInfo(testUser01); //userInfo api data 호출
     this.getSidebarBoards();
-    this.mainUrl = process.env.BASE_URL;
     //main.js import for sidebar
   }, //template에 정의된 html 코드가 랜더링된 후 실행
   methods: {
@@ -118,6 +117,20 @@ export default {
 @import '../assets/vendors/perfect-scrollbar/perfect-scrollbar.css';
 @import '../assets/vendors/bootstrap-icons/bootstrap-icons.css';
 @import '../assets/css/app.css';
+
+.sidebar-wrapper {
+  box-shadow: 0px 10px 10px lightgrey;
+}
+#myinfo-area {
+  margin: 3%;
+  margin-block-start: 1.5rem;
+  margin-block-end: 2.5rem;
+}
+
+#btn-write {
+  margin-block-start: 1rem;
+  margin-block-end: 1.5rem;
+}
 
 </style>
 

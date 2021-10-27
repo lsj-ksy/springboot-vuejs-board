@@ -1,16 +1,12 @@
 <template>
   <div id="main">
-    <header class="mb-3">
-      <a href="#" class="burger-btn d-block d-xl-none">
-        <i class="bi bi-justify fs-3"></i>
-      </a>
-    </header>
+
     <div class="page-heading">
       <section class="section">
         <div class="row" id="table-head">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header" id="board-path">
                 <h4 class="card-title"> {{ postList.categoryName }}
                   <span style="font-size: 75%;"> > {{ postList.boardName }}</span></h4>
               </div>
@@ -44,6 +40,7 @@
                     </tr>
                     </tbody>
                   </table>
+                  <div class="p-3"></div>
                 </div>
               </div>
             </div>
@@ -54,7 +51,7 @@
         <router-link class="btn btn-outline-primary mt-1 mb-10" :to="`/post_write/${categoryId}/${boardId}`">글쓰기</router-link>
       </div>
     </div>
-    <div class="align-center">
+    <div class="d-flex justify-content-center">
       <pagination v-model="page" :records="parseInt(this.totalPostsCount)" :per-page="this.perPage" @paginate="myCallback"/>
     </div>
   </div>
@@ -145,3 +142,9 @@ export default {
   }
 }
 </script>
+<style>
+#board-path {
+  margin: 3%;
+}
+
+</style>

@@ -21,8 +21,13 @@ public class FileHandler {
     private final String uploadPath;
 
     public FileHandler() {
-        this.uploadPath = System.getProperty("user.dir") + File.separator + "frontend" + File.separator+ "src"
-                + File.separator + "assets" + File.separator + "images" + File.separator + "upload";
+        String checkOS = System.getProperty("os.name").toLowerCase();
+        if (checkOS.contains("win") || checkOS.contains("mac")) {
+            this.uploadPath = System.getProperty("user.dir") + File.separator + "upload";
+        } else {
+            String checkPath = System.getProperty("user.dir").substring(0, System.getProperty("user.dir").lastIndexOf("/") + 1);
+            this.uploadPath = checkPath + "webapps/upload/springboot-vuejs-board";
+        }
     }
 
     //업로드 폴더 생성 여부 체크 함수
@@ -60,7 +65,8 @@ public class FileHandler {
             for (MultipartFile multipartFile : fileList) {
 
                 String fileOriginName = multipartFile.getOriginalFilename(); //ex) 사진.png
-                String extension = fileOriginName.split("\\.")[1];      //ex) .png
+                //String extension = fileOriginName.split("\\.")[1];      //ex) .png
+                String extension = fileOriginName.substring(fileOriginName.lastIndexOf(".") + 1);      //ex) .png
                 String fileName = new MD5Generator(fileOriginName) + "." + extension; //ex) 0d93jdk21sk....
                 String filePath = savePath + File.separator + fileName; //ex) 니컴퓨터/프로젝트폴더/upload/{folderName}/사진.png
 

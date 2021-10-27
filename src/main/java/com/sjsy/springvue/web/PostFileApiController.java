@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,12 +39,16 @@ public class PostFileApiController {
                 .body(resource);
     }
 
-    @PostMapping("/api/v1/upload")
-    public ResponseEntity<List<String>> fileUpload(@RequestParam(value = "files") List<MultipartFile> fileList) {
+    @GetMapping("/api/v1/check_file/{id}")
+    public ResponseEntity<String> checkFile(@PathVariable Long id) {
+        PostFileDownloadResDto fileDownloadDto = postFileService.getFile(id);
+        Path path = Paths.get(fileDownloadDto.getFilePath());
 
-        List<String> result = new ArrayList<>();
-        result.add("uploadddddd");
-        return new ResponseEntity<List<String>>(result, HttpStatus.OK);
+        if (path.toFile().isFile()) {
+            return new ResponseEntity<String>(String.valueOf(id), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>(String.valueOf(false), HttpStatus.OK);
+        }
     }
 
 }

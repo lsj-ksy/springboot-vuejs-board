@@ -1,11 +1,9 @@
 <template>
   <div id="title">
-    <div class="container">
-      <div class="card mt-5">
-          <a class="card-title" :href="`${mainUrl}`">
+    <div class="container-fluid">
+          <a class="title-link" :href="`${mainUrl}`">
             <img id="title-img" src="../assets/images/samples/temp_title.png">
           </a>
-      </div>
     </div>
   </div>
 </template>
@@ -17,7 +15,7 @@ export default {
   data() { //html과 js코드에서 사용할 데이터 변수 선언
     return {
       sampleData: "",
-      mainUrl: ''
+      mainUrl: process.env.BASE_URL
     };
   },
   setup() {
@@ -25,7 +23,6 @@ export default {
   created() {
   }, //컴포넌트가 생성되면 실행
   mounted() {
-    this.mainUrl = process.env.BASE_URL;
   }, //template에 정의된 html 코드가 랜더링된 후 실행
   unmounted() {
   }, //unmount가 완료된 후 실행
@@ -34,6 +31,15 @@ export default {
 </script>
 
 <style scoped>
+#title {
+  padding-inline: 5%;
+  border-bottom: 0.2rem solid #ebebeb;
+}
+#title-img {
+  object-fit: contain;
+  position: relative;
+  top: 0.325vh;
+}
 
 </style>
 

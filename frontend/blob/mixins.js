@@ -10,7 +10,7 @@ export default {
             return (await axios({
                 method: method,
                 url,
-                params
+                params,
             }).catch(e => {
                 console.log(e);
             })).data;

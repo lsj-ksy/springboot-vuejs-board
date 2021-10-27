@@ -161,8 +161,8 @@ public class PostService {
     }
 
     //게시물 삭제
-    @Transactional(readOnly = true)
-    public void postDelete(Long postId, Long userId) {
+    @Transactional
+    public int postDelete(Long postId, Long userId) {
 
         Post updatePost = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Not Found Post id = " + postId));
@@ -175,6 +175,8 @@ public class PostService {
 
         postRepository.save(updatePost);
         postRepository.flush();
+
+        return postRepository.findById(postId).get().getEnabled();
     }
 
     //게시판 게시글 리스트 dto response service
@@ -218,6 +220,5 @@ public class PostService {
             return postRepository.countTotalPosts(boardId);
         }
     }
-
 
 }
